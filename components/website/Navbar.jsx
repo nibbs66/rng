@@ -31,7 +31,12 @@ const Navbar = () => {
 
 
     useEffect(()=>{
-        setUser(session)
+        if(session){
+            setUser(session)
+        }else{
+            setUser(null)
+        }
+
     },[session])
 
     const handleClick = () => {

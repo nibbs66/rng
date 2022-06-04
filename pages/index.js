@@ -1,14 +1,14 @@
 import Head from 'next/head'
 
 import styles from '../styles/Home.module.css'
-
+import MainLayout from "../components/layouts/MainLayout";
 import {useState} from "react";
 import axios from "axios";
 import Slider from "../components/website/Slider";
 import VendorLogos from "../components/website/VendorLogos";
 
 
-Home.layout = "L3";
+
 export default function Home({images}) {
 
 
@@ -47,6 +47,11 @@ export async function getServerSideProps (){
             images: res.data
         }
     }
-
-
+}
+Home.getLayout = function getLayout(page){
+    return(
+        <MainLayout>
+            {page}
+        </MainLayout>
+    )
 }
