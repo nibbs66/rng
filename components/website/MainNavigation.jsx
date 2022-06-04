@@ -1,10 +1,11 @@
 import React from 'react';
 import styles from "../../styles/website/Navbar.module.css";
 import Link from "next/link";
+import DropDown from "../DropDown";
 
 
 
-const MainNavigation = ({session, user, setTitle, handleClick, handleLogOut, test, showDropdown}) => {
+const MainNavigation = ({session, user, setTitle, handleClick, handleLogOut}) => {
     return (
         <div className={styles.item}>
             <div className={styles.userSession}>
@@ -55,7 +56,7 @@ const MainNavigation = ({session, user, setTitle, handleClick, handleLogOut, tes
                     </>}
             </ul>
 
-
+            <DropDown/>
         </div>
     );
 };
