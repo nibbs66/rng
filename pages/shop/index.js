@@ -51,7 +51,7 @@ const Index = ({categories}) => {
 };
 
 export default Index;
-;
+
 export const getServerSideProps = async(ctx) => {
  const host = ctx.req.headers.host;
 

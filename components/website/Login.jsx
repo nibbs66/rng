@@ -50,13 +50,17 @@ const Login = ({showModal, setShowModal, location}) => {
                 setShowError()
             }else if(res.ok){
                 const session = await getSession()
-                retrieveCart(dispatch, session, cart)
+
                 if(location === 'home'){
                     router.push('/')
                 }
-                if(location === 'checkout'){
-                    router.push(`/cart/${cart.cartId}`)
-                }
+
+               /* {
+                    if (location === 'checkout') {
+                        router.push(`/cart/${cart.cartId}`)
+                    }
+                }*/
+
                 setShowModal()
 
             }
