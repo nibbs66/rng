@@ -80,9 +80,9 @@ const Login = ({showModal, setShowModal, location}) => {
             <form className={styles.form}  onSubmit={handleSubmit(onSubmit)}>
 
                 <input className={styles.input}  {...register("username")} placeholder="username" />
-                <p>{errors.username?.message}</p>
+                {errors?.username && <p>{errors.username?.message}</p>}
                 <input className={styles.input} placeholder="password" {...register("password")} type='password' />
-                <p>{errors.passowrd?.message}</p>
+                {errors?.password && <p>{errors.passowrd?.message}</p>}
                 <button className={styles.button} type="submit" >LOGIN</button>
                 {showError && <span className={styles.error}>{error}</span>}
                 <div className={styles.options}>
