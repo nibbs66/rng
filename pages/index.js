@@ -41,7 +41,7 @@ export async function getServerSideProps (ctx){
     const host = ctx.req.headers.host;
 
 
-    const res = await axios.get(process.env.PUBLIC_URL+`/api/images`);
+    const res = await axios.get(`https://`+host+`/api/images`);
 
     return{
         props:{
