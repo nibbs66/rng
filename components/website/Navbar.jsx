@@ -7,7 +7,7 @@ import { useSession, signOut } from "next-auth/react"
 import logo from "../../public/img/headerlogo.svg";
 import Modal from "../Modal";
 import useToggle from "../hooks/useToggle";
-
+import useUser from "../../pages/api/hooks/useUser";
 import Hamburger from "./Hamburger";
 import MainNavigation from "./MainNavigation";
 import Heart from '../icons/Heart'
@@ -27,7 +27,7 @@ const Navbar = () => {
     const [open, setOpen] = useState(false)
     const [title, setTitle] = useState('')
     const test = useRef(null);
-
+    const {cart, favorites, error, isValidating} = useUser()
 
 
     useEffect(()=>{
@@ -46,6 +46,9 @@ const Navbar = () => {
 
         signOut()
 
+    }
+    if(isValidating){
+        return <h1>Loading...</h1>
     }
 
     return (
@@ -85,14 +88,14 @@ const Navbar = () => {
                                 <div className={styles.favorite}>
                                     <Heart height={30} width={30} color={'white'}/>
 
-                                    <div className={styles.counter2}>0</div>
+                                    <div className={styles.counter2}>{favorites ? favorites?.items?.length : 0}</div>
                                 </div>
                             </Link>
                             <Link href={`/cart/555`} passHref>
                                 <div className={styles.cart}>
                                     <ShoppingCart/>
 
-                                    <div className={styles.counter2}>0</div>
+                                    <div className={styles.counter2}>{cart ? cart?.items?.length : 0}</div>
 
                                 </div>
                             </Link>

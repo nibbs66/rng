@@ -65,6 +65,17 @@ const UserSchema = new mongoose.Schema(
             hireDate:{type: Date},
             position:{type: String}
         },
+        cart: {
+            type: String,
+
+        },
+        favorites: {
+            type: String,
+
+        },
+        orders: {
+            type: Array,
+        },
         userType:{
             type: [String]
         },

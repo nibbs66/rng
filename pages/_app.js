@@ -4,10 +4,10 @@ import React from 'react'
 import { SessionProvider } from "next-auth/react"
 
 
-function MyApp({ Component, session,  pageProps }) {
+function MyApp({ Component, pageProps }) {
     const getLayout = Component.getLayout || ((page) => page)
     return (
-        <SessionProvider session={session}>
+        <SessionProvider session={pageProps.session}>
             {getLayout(<Component {...pageProps} />)}
         </SessionProvider>
         )

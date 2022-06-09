@@ -8,9 +8,9 @@ const ServiceCard = ({product, cat}) => {
     const router = useRouter()
 
     const handleClick = (page) => {
-        router.push(`/shop/${cat}/${page}`)
+        router.push(`/shop/favorites/${page}`)
     }
-
+console.log(cat)
     return (
         <div className={styles.container} onClick={()=>handleClick(product._id)}>
 
@@ -27,7 +27,7 @@ const ServiceCard = ({product, cat}) => {
                     <span className={styles.manufacturer}>{product.manufacturer}</span>
                     <span className={styles.title}>{product.name}</span>
                     <div className={styles.iconContainer}>
-                        <span className={styles.price}>€{(product.price).toFixed(2)}</span>
+                      <span className={styles.price}>€{(product.price)?.toFixed(2)}</span>
                     </div>
 
 
