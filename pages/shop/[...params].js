@@ -172,8 +172,8 @@ const Product = ({product, images}) => {
 
 console.log(session)
     return (
-       
-           
+
+
         <div className={styles.container}>
             <Modal showModal={showModal} setShowModal={setShowModal} title={title} img={`/img/${product.img[index]}`} pic={product.img} size={size} color={color} product={product} quantity={quantity}/>
             <Head>
@@ -268,15 +268,15 @@ console.log(session)
 
             <VendorLogos logos={images} as={'logo'} width={width}/>
         </div>
-      
+
     );
 };
 
 export default Product;
 
 
-export const getServerSideProps = async (ctx) =>{
-console.log(ctx)
+export const getServerSideProps = async (ctx) =>{0
+    const host = ctx.req.headers.host;
     const res = await axios.get(`https://`+host+`/api/products/${ctx.params.params[1]}`);
     const img = await axios.get(`https://`+host+`/api/images`);
     return{

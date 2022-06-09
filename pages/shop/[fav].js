@@ -8,11 +8,12 @@ import ServiceCard from "../../components/website/ServiceCard";
 
 import ArrowBack from "../../components/icons/ArrowBack";
 import MainLayout from "../../components/layouts/MainLayout";
+import useUser from "../api/hooks/useUser";
 
 
 
 const Favorites = ({session}) => {
-const {favorites} = session
+    const {favorites, isLoggedIn, mutate, userId} = useUser()
 
     const router = useRouter()
 
@@ -41,11 +42,11 @@ const {favorites} = session
 
                 </div>
                 <div className={styles.cardContainer}>
-                    {favorites.map((item, idx) => (
+                    {favorites.items.map((item, idx) => (
 
                         <div key={idx}>
 
-                            <ServiceCard key={idx} product={item.items[idx]}/>
+                            <ServiceCard key={item._id} product={item} cat={fav}/>
 
 
                         </div>

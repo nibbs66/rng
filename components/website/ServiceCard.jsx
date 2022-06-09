@@ -6,9 +6,11 @@ import{useRouter} from 'next/router'
 const ServiceCard = ({product, cat}) => {
 
     const router = useRouter()
+    const {query}= useRouter()
+
 
     const handleClick = (page) => {
-        router.push(`/shop/favorites/${page}`)
+        router.push(`/shop/${query.cat}/${page}`)
     }
 console.log(cat)
     return (
