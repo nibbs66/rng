@@ -5,22 +5,24 @@ import {useRouter} from "next/router";
 import Head from "next/head";
 import Modal from "../../components/Modal";
 import axios from "axios";
-import useLocalStorageState from "use-local-storage-state";
+import useLocalStorageState from 'use-local-storage-state'
 import {AddToCart, FavoriteButton} from "../../components/actions/Buttons";
-
+import { v4 as uuidv4 } from 'uuid';
 import {useSession} from "next-auth/react";
 import useToggle from "../../components/hooks/useToggle";
 import VendorLogos from "../../components/website/VendorLogos";
 import windowDimensions from "../../components/hooks/windowDimensions";
 import MainLayout from "../../components/layouts/MainLayout";
 import useUser from "../api/hooks/useUser";
+import  { useSWRConfig } from 'swr'
 
 
 const Product = ({product, images}) => {
     const {data: session, status} = useSession()
     const {cart, mutateCart} = useUser()
+    const {mutate} = useSWRConfig()
     const router = useRouter()
-
+    const { height, width } = windowDimensions();
     const [quantity, setQuantity] = useState(1)
     const [productId, setProductId] = useState(product._id)
     const [color, setColor] = useState('')
@@ -30,127 +32,102 @@ const Product = ({product, images}) => {
     const [index, setIndex] = useState(0)
     const [title, setTitle] = useState('')
     const [favoriteCart, setFavoriteCart] = useState('')
-    const [guestCart, setGuestCart] = useLocalStorageState('tempCart',{
+
+    const [guestCart, setGuestCart] = useLocalStorageState('tempRnGCart', {
         ssr: true,
         defaultValue: ''
     })
 
-    const { height, width } = windowDimensions();
+
 
 
     const handleClick = async(request) => {
-       if(request !=='Photo') {
+            try{
 
-           if (status === 'unauthenticated' && !cart) {
-
-               try {
-                   const res = await axios.post(`/api/cart`,
-                       {
-
-                           userId: 'guest' + uuidv4(),
-                           items: {
-                               productId,
-                               color,
-                               size,
-                               quantity,
-                               name: product.name,
-                               img: product.img[0],
-                               price: product.price,
-                               modelId: product.modelId
-                           },
-                           isRegistered: false,
-                           total: product.price * quantity
-                       })
+                if (status === 'unauthenticated' && !cart){
+                   const  res = await axios.post(`/api/cart`,
+                        {
+                            userId: 'guest' + uuidv4(),
+                            items: {
+                                productId,
+                                color,
+                                size,
+                                quantity,
+                                name: product.name,
+                                img: product.img[0],
+                                price: product.price,
+                                modelId: product.modelId
+                            },
+                            isRegistered: false,
+                            total: product.price * quantity
+                        })
+                  await mutate(`/api/cart/${res.data._id}`, true)
                    setGuestCart(res.data._id)
 
 
-                   console.log('guest cart', res.data)
-               } catch (err) {
-                   console.log(err)
-               }
-               await mutate(`/api/cart`)
+                }else if (status === 'unauthenticated' && cart.items.length > 0){
+                    const  res = await axios.put(`/api/cart?cart=${cart?.userId}`,
+                        {
 
-           } else if (status === 'unauthenticated' && cart.items.length > 0) {
-               try {
-                   const res = await axios.put(`/api/cart?cart=${cart?.userId}`,
-                       {
+                            items: {
+                                productId,
+                                color,
+                                size,
+                                quantity,
+                                name: product.name,
+                                img: product.img[0],
+                                price: product.price,
+                                modelId: product.modelId
+                            },
+                            addToTotal: product.price * quantity,
+                            isRegistered: false
 
-                           items: {
-                               productId,
-                               color,
-                               size,
-                               quantity,
-                               name: product.name,
-                               img: product.img[0],
-                               price: product.price,
-                               modelId: product.modelId
-                           },
-                           addToTotal: product.price * quantity,
-                           isRegistered: false
+                        });
 
-                       })
-                   mutateCart(`/api/cart`)
-                   //setGuestQuantity(res.data.items[0length)
-                   console.log('guest cart2v', res.data)
-               } catch (err) {
-                   console.log(err)
-               }
+                }else if (status === 'authenticated' && !cart){
+                    const res = await axios.post(`/api/cart`,
+                        {
+                            userId: session.id,
+                            items: {
+                                productId,
+                                color,
+                                size,
+                                quantity,
+                                name: product.name,
+                                img: product.img[0],
+                                price: product.price,
+                                modelId: product.modelId
+                            },
+                            total: product.price * quantity,
+                            isRegistered: true
+                        });
 
+                }else if (status === 'authenticated' && cart.items.length > 0){
+                    const res = await axios.put(`/api/cart?cart=${session.id}`,
 
-           }
-           if (status === 'authenticated' && !cart) {
-               try {
-                   const res = await axios.post(`/api/cart`,
-                       {
-                           userId: session.id,
-                           items: {
-                               productId,
-                               color,
-                               size,
-                               quantity,
-                               name: product.name,
-                               img: product.img[0],
-                               price: product.price,
-                               modelId: product.modelId
-                           },
-                           total: product.price * quantity,
-                           isRegistered: true
-                       })
+                        {
+                            items: {
+                                productId,
+                                color,
+                                size,
+                                quantity,
+                                name: product.name,
+                                img: product.img[0],
+                                price: product.price,
+                                modelId: product.modelId
+                            },
+                            addToTotal: product.price * quantity,
+                        }
+                    )
+                };
 
 
-                   console.log('first cart response', res.data)
-               } catch (err) {
-                   console.log(err)
-               }
+                    }catch(err){
+                console.log(err)
+            }
 
-           } else if (status === 'authenticated' && cart.items.length > 0) {
 
-               try {
-                   const res = await axios.put(`/api/cart?cart=${session.id}`,
-
-                       {
-                           items: {
-                               productId,
-                               color,
-                               size,
-                               quantity,
-                               name: product.name,
-                               img: product.img[0],
-                               price: product.price,
-                               modelId: product.modelId
-                           },
-                           addToTotal: product.price * quantity,
-                       }
-                   )
-                   mutateCart(`/api/cart`)
-                   console.log('--->', res.data)
-               } catch (err) {
-                   console.log(err)
-               }
-
-           }
-       }
-      setShowModal();
+            setShowModal();
     };
 
     const handlePhoto = (idx) => {
@@ -170,7 +147,9 @@ const Product = ({product, images}) => {
 }
 
 
-console.log(session)
+    if(status === 'loading'){
+        return null
+    }
     return (
 
 
@@ -186,7 +165,7 @@ console.log(session)
                     <div className={styles.topImage}>
                         <Image className={styles.img} src={`/img/${product.img[index]}`} alt="" height={350} width={350}  objectFit="contain" onClick={()=>{
                             setTitle('Photo')
-                                handleClick('Photo')
+                               setShowModal()
                         }}/>
                     </div>
 
@@ -277,8 +256,8 @@ export default Product;
 
 export const getServerSideProps = async (ctx) =>{0
     const host = ctx.req.headers.host;
-    const res = await axios.get(`https://`+host+`/api/products/${ctx.params.params[1]}`);
-    const img = await axios.get(`https://`+host+`/api/images`);
+    const res = await axios.get(`http://`+host+`/api/products/${ctx.params.params[1]}`);
+    const img = await axios.get(`http://`+host+`/api/images`);
     return{
         props:{
             product: res.data,

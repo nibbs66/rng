@@ -31,14 +31,14 @@ export default async function handler(req, res) {
 
     }
     if(method==="POST"){
-        console.log(req.body)
+
         const userId = req.body.userId
-       try{
+        try{
             const cart = await Cart.create(req.body);
-                if(cart._id){
-                   await User.findByIdAndUpdate(userId,
-                        {cart: cart._id})
-                }
+           if(!userId.includes('guest')){
+               await User.findByIdAndUpdate(userId,
+                   {cart: cart._id})
+           }
            res.status(201).json(cart)
         }catch(err){
             res.status(500).json(err);
@@ -46,16 +46,20 @@ export default async function handler(req, res) {
     }
 
     if(method === 'PUT'){
-        const items = req.body
-            console.log(items)
+        const {items, addToTotal} = req.body
 
-    try{
-        const updatedCart = await Cart.findOneAndUpdate(
+        try{
+             await Cart.findOneAndUpdate(
                 {userId: cart},
                 {$push: {items: {productId: items.productId, quantity: items.quantity, color: items.color,
                             size: items.size, name: items.name, modelId: items.modelId, img: items.img, price: items.price}}}
             )
-            res.status(200).json(updatedCart)
+
+            const amendedCart = await Cart.findOneAndUpdate(
+                {userId: cart},
+                {$inc: {total: addToTotal},  new: true}
+            )
+            res.status(200).json(amendedCart)
         }catch(err){
             res.status(500).json(err);
         }

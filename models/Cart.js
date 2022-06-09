@@ -19,6 +19,9 @@ const CartSchema = new mongoose.Schema({
                 }
             ]
         },
+        total: {
+            type: Number,
+        },
         status: {
             type: Number,
             default: 0,

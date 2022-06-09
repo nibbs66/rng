@@ -18,6 +18,7 @@ import Facebook from '../icons/Facebook'
 
 const Navbar = () => {
     const {data: session} = useSession()
+    const {cart, mutateCart, favorites, error, isValidating} = useUser()
 
 
     const [user, setUser] = useState({})
@@ -27,9 +28,8 @@ const Navbar = () => {
     const [open, setOpen] = useState(false)
     const [title, setTitle] = useState('')
     const test = useRef(null);
-    const {cart, favorites, error, isValidating} = useUser()
 
-
+console.log(cart)
     useEffect(()=>{
         if(session){
             setUser(session)
@@ -88,14 +88,14 @@ const Navbar = () => {
                                 <div className={styles.favorite}>
                                     <Heart height={30} width={30} color={'white'}/>
 
-                                    <div className={styles.counter2}>{favorites ? favorites?.items?.length : 0}</div>
+                                    <div className={styles.counter2}>{favorites?.items?.length || 0}</div>
                                 </div>
                             </Link>
                             <Link href={`/cart/555`} passHref>
                                 <div className={styles.cart}>
                                     <ShoppingCart/>
 
-                                    <div className={styles.counter2}>{cart ? cart?.items?.length : 0}</div>
+                                    <div className={styles.counter2}>{cart?.items?.length || 0}</div>
 
                                 </div>
                             </Link>

@@ -42,7 +42,7 @@ const Favorites = ({session}) => {
 
                 </div>
                 <div className={styles.cardContainer}>
-                    {favorites.items.map((item, idx) => (
+                    {favorites?.items?.map((item, idx) => (
 
                         <div key={idx}>
 

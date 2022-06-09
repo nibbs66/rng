@@ -3,6 +3,8 @@ import styles from "../styles/Modal.module.css"
 
 import Link from 'next/link'
 import Login from "./website/Login";
+import CartSummary from "./website/CartSummary";
+import ImageModal from "./website/ImageModal";
 
 /*import CheckoutForm from './checkout/CheckoutForm'
 import {useRouter} from "next/router";
@@ -30,8 +32,9 @@ const Modal = ({showModal, setShowModal, title, location, pic, img, product, siz
     <>
         {showModal &&
             <div  className={styles.container}>
-                {title === 'Login' && <Login handleClick={handleClick} location={location} showModal={showModal}
-                                             setShowModal={setShowModal}/>}
+                {title === 'Login' && <Login handleClick={handleClick} location={location} showModal={showModal} setShowModal={setShowModal}/>}
+                {title === 'Cart' && <CartSummary quantity={quantity} size={size} color={color} showModal={showModal} setShowModal={setShowModal} product={product} img={img}/>}
+                {title === 'Photo' && <ImageModal showModal={showModal} setShowModal={setShowModal} img={img} pic={pic}/>}
 
             </div>
 
