@@ -17,13 +17,12 @@ export default function useUser () {
     const [guestId, setGuestId] = useState('')
     const{data: session, status} = useSession()
     const [guestCart, setGuestCart] = useLocalStorageState('tempRnGCart', {
-        ssr: true,
+        ssr: false,
         defaultValue: `guest${uuidv4()}`
     })
 
     const id = session?.id
     useEffect(()=>{
-
         const cartId = async() => {
             if(status === 'unauthenticated'){
                 const getCart =  await JSON.parse(localStorage.getItem('tempRnGCart'))
@@ -31,7 +30,7 @@ export default function useUser () {
             }
         }
        cartId()
-    },[])
+    },[guestId])
 
     const {data: user, error, isValidating, mutate} = useSWR(id && `/api/users/`+id, fetcher)
     let cartId;
