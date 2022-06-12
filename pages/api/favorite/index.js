@@ -16,11 +16,11 @@ export default async function handler(req, res) {
     if(method==="GET"){
 
         try {
-            console.log(favorite)
+
             let favorites;
             if (favorite) {
 
-                favorites = await Favorite.find(
+                favorites = await Favorite.findOne(
                     {userId: favorite}
                 );
             }else {
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     }
     if(method==="POST"){
         const userId = req.body.userId
-        //console.log(req.body)
+
         try{
             const favorite = await Favorite.create(req.body);
             if(favorite._id){

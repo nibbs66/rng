@@ -1,9 +1,9 @@
 
 import styles from "../../styles/website/VendorLogo.module.css";
 import Image from "next/image";
-import Link from "next/link";
+
 import {useEffect, useState} from "react";
-import axios from "axios";
+
 
 
 const VendorLogos = ({images, as}) => {

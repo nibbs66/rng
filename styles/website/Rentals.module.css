@@ -1,8 +1,28 @@
 .container{
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
     top: -10px;
 
+}
+.back{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+.backArrow{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #0073ad;
+}
+.terug{
+    cursor: pointer;
+    margin-left: 15px;
+    font-size: 38px;
 }
 .header{
 

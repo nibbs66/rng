@@ -67,7 +67,7 @@ export default async function handler(req, res) {
             const rUser = await User.findOne({'personal.username': personal.username})
             const pUser = await PendingUser.findOne({'personal.username': personal.username})
 
-            if (pUser || rUser) { return res.status(422).send('username is already registered!');}
+            if (pUser || rUser) { return res.status(422).send('Username is already taken');}
             const user = await PendingUser.create(newUser);
             await sendConfirmationEmail({toUser: user.firstName, id: user._id, userRequest: 'register'})
             res.status(201).json('Please check your email to activate account.')

@@ -22,37 +22,35 @@ export default async function handler(req, res) {
         }
 
     }
-    if(method === 'PUT'){
-        const{quant, productId, deleteId}=req.body
-        console.log('id--->',deleteId)
+    if(method === 'PUT') {
+        const {save, remove} = req.body
 
-        /*if(productId){
-          try{
-           const updatedFavorite = await Favorite.findOneAndUpdate(
-               id,
-               {$set: {[`items.$[outer].quantity`]: quant}},
-               { "arrayFilters": [{ "outer.productId": productId}], new: true}
-           )
-           res.status(200).json(updatedFavorite)
-       }catch(err){
-           res.status(500).json(err);
-       }
+      if (save) {
+            try {
+                const updatedFavorite = await Favorite.findOneAndUpdate(
+                    id,
+                    {$push: {items: {...save}}}
+                )
+                res.status(200).json(updatedFavorite)
+            } catch (err) {
+                res.status(500).json(err);
+            }
+        }else if (remove) {
+            try {
+                const deleteFavoriteItem = await Favorite.findByIdAndUpdate(
+                    id,
+                    {
+                        $pull: {
+                            items: {_id: remove}
+                        }
+                    },
+                    {safe: true}
+                )
+                res.status(200).json(deleteFavoriteItem)
+            } catch (err) {
+                res.status(500).json(err);
+            }
         }
-       if(deleteId){
-           try{
-               const deleteFavoriteItem = await Favorite.updateOne(
-                   {_id: id},
-                   {$pull: {
-                           items: {_id: deleteId}
-                       }},
-                   {safe: true}
-
-               )
-               res.status(200).json(deleteFavoriteItem)
-           }catch(err){
-               res.status(500).json(err);
-           }
-       }*/
     }
     if(method === 'DELETE'){
         try{

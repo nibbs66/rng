@@ -18,7 +18,7 @@ const Favorites = ({session}) => {
     const router = useRouter()
 
     const {fav} = router.query
-    console.log(favorites)
+
     return (
         <div className={styles.container}>
             <Head>

@@ -23,56 +23,44 @@ export default async function handler(req, res) {
 
     }
     if(method === 'PUT'){
-        const{quant, productId, deleteId, newStatus}=req.body
-        console.log('----->', newStatus)
-        if(productId){
-          try{
-           const updatedCart = await Cart.findOneAndUpdate(
-               id,
-               {$set: {[`items.$[outer].quantity`]: quant}},
-               { "arrayFilters": [{ "outer.productId": productId}], new: true}
-           )
-           res.status(200).json(updatedCart)
-       }catch(err){
-           res.status(500).json(err);
-       }
-        }
-        if(newStatus){
-            try{
-                const updatedOrder = await Cart.findOneAndUpdate(
-                    id,
-                    {$set: {[`status`]:  (newStatus)}},
+        const{quant, productId, addToTotal, selected, shippingCost}=req.body
 
+        if(!selected){
+            try{
+                await Cart.findOneAndUpdate(
+                    {_id: id},
+                    {$set: {[`items.$[outer].quantity`]: quant}},
+                    { "arrayFilters": [{ "outer.productId": productId}]}
                 )
-                res.status(200).json(updatedOrder)
+                const updatedCart = await Cart.findOneAndUpdate(
+                    {_id: id},
+                    {$inc: {total: addToTotal},  new: true}
+                )
+
+
+                res.status(200).json(updatedCart)
             }catch(err){
                 res.status(500).json(err);
             }
-        }
-       if(deleteId){
+        }else{
+            try{
+        const shippingUpdate = await Cart.findOneAndUpdate(
+             {_id: id},
+            {$set: {shipping:
+                       {
+                           method: selected,
+                           price: shippingCost
+                       },
+                    new: true
+            }
+            },
+          )
+                res.status(200).json(shippingUpdate)
+            }catch(err){
+                res.status(500).json(err);
+                        }
+}
 
-           try{
-               const deleteCartItem = await Cart.updateOne(
-                   {_id: id},
-                   {$pull: {
-                           items: {_id: deleteId}
-                       }},
-                   {safe: true}
 
-               )
-               res.status(200).json(deleteCartItem)
-           }catch(err){
-               res.status(500).json(err);
-           }
-       }
-    }
-    if(method === 'DELETE'){
-        try{
-            await Cart.findByIdAndDelete(id)
-            res.status(200).json("Cart has been deleted...")
-        }catch(err){
-            res.status(500).json(err)
-        }
-    }
-
+}
 }

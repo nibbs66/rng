@@ -7,6 +7,8 @@ import axios from "axios";
 import ServiceCard from "../../../components/website/ServiceCard";
 import ArrowBack from "../../../components/icons/ArrowBack";
 import MainLayout from "../../../components/layouts/MainLayout";
+import useSWR from "swr";
+import {fetcher} from "../../../components/helper/fetcher";
 
 const Product = ({categoryList, subCat}) => {
 
@@ -16,14 +18,18 @@ const Product = ({categoryList, subCat}) => {
     const [quantity, setQuantity] = useState(1)
     const [catListing, setCatListing] = useState(cat)
     const [mapSelection, setMapSelection] = useState(true)
+    const { data: products, error, mutate} = useSWR(`/api/products`, fetcher)
+
+
+
     const handleClick = (sub) => {
         setCatListing(sub)
         if(sub === 'New'){
             setMapSelection(false)
         }
-        console.log(sub)
+
     }
-console.log(categoryList.length)
+
     return (
         <div className={styles.container}>
             <Head>
@@ -91,8 +97,8 @@ console.log(categoryList.length)
 export const getServerSideProps = async (ctx) =>{
 
     const host = ctx.req.headers.host;
-    const res = await axios.get(`http://`+host+`/api/products?category=${ctx.params.cat}`);
-    const cat = await axios.get(`http://`+host+`/api/catMenu?category=${ctx.params.cat}`);
+    const res = await axios.get(`https://`+host+`/api/products?category=${ctx.params.cat}`);
+    const cat = await axios.get(`https://`+host+`/api/catMenu?category=${ctx.params.cat}`);
 
 
     return{

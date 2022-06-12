@@ -12,7 +12,7 @@ const ServiceCard = ({product, cat}) => {
     const handleClick = (page) => {
         router.push(`/shop/${query.cat}/${page}`)
     }
-console.log(cat)
+
     return (
         <div className={styles.container} onClick={()=>handleClick(product._id)}>
 

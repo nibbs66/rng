@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Login from "./website/Login";
 import CartSummary from "./website/CartSummary";
 import ImageModal from "./website/ImageModal";
-
+import GuestCheckOut from "./website/GuestCheckOut";
 /*import CheckoutForm from './checkout/CheckoutForm'
 import {useRouter} from "next/router";
 import CartSummary from "./website/CartSummary";
@@ -19,9 +19,9 @@ import UserSearch from "./admin/UserSearch";
 import GuestCheckOut from "./website/GuestCheckOut";*/
 
 
-const Modal = ({showModal, setShowModal, title, location, pic, img, product, size, color, quantity}) => {
+const Modal = ({showModal, setShowModal, title, location, pic, img, product, size, color, quantity, setShowCheckout}) => {
     const handleClick = (value) => {
-        console.log('--->', value)
+
         setShowModal()
 
 
@@ -35,7 +35,7 @@ const Modal = ({showModal, setShowModal, title, location, pic, img, product, siz
                 {title === 'Login' && <Login handleClick={handleClick} location={location} showModal={showModal} setShowModal={setShowModal}/>}
                 {title === 'Cart' && <CartSummary quantity={quantity} size={size} color={color} showModal={showModal} setShowModal={setShowModal} product={product} img={img}/>}
                 {title === 'Photo' && <ImageModal showModal={showModal} setShowModal={setShowModal} img={img} pic={pic}/>}
-
+                {title === 'Guest' && <GuestCheckOut handleClick={handleClick} setShowModal={setShowModal} setShowCheckout={setShowCheckout}/>}
             </div>
 
 

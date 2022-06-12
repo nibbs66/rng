@@ -20,7 +20,7 @@ const Slider = ({images, as}) => {
             setIndex(index !==5 ? index+1 : 0)
         }
     }
-    console.log(pics)
+
 
     return (
        <div className={styles.container}>

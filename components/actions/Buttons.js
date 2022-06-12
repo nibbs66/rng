@@ -7,17 +7,19 @@ import useToggle from "../hooks/useToggle";
 import Heart from "../icons/Heart";
 import useUser from "../../pages/api/hooks/useUser";
 import {useSession} from "next-auth/react";
+import axios from "axios";
 
 
-export const FavoriteButton = ({dispatch, product, quantity, favs, favoriteCart}) => {
+export const FavoriteButton = ({ product}) => {
     const {data: session, status} = useSession()
-    const {favorites, mutate, isValidating} = useUser()
-   const handleSave =  async() => {
+    const {favorites, mutateFavorite, isValidating} = useUser()
+    console.log(favorites)
+    const handleSave =  async() => {
        if(status === 'unauthenticated'){
               return null;
           }
           if(status==='authenticated' && !favorites){
-              console.log('first')
+
               try{
                   const res = await axios.post(`/api/favorite`,
                       {
@@ -25,26 +27,26 @@ export const FavoriteButton = ({dispatch, product, quantity, favs, favoriteCart}
                           items: product
 
                       })
-                   mutate(`/api/favorite`)
-                  console.log('res at api', res.data)
+                  mutateFavorite()
+
               }catch(err){
                   console.log(err)
               }
 
           }else if(status==='authenticated' && favorites.items.length > 0) {
               const dupSearch = await favorites.items.filter((favorite) => favorite._id === product._id)
-            console.log(dupSearch.length)
+
              if (dupSearch.length === 0) {
                 try {
-                     const res = await axios.put(`http://localhost:3000/api/favorite?favorite=${session.id}`,
+                     const res = await axios.put(`/api/favorite/${favorite._id}`,
                          {save: product},
                      )
-                    mutate(`/api/favorite`)
-                     console.log('res at api', res.data)
+                    mutateFavorite()
+
 
 
                  } catch (err) {
-                     console.log(err)
+
                  }
              }
 
@@ -52,12 +54,30 @@ export const FavoriteButton = ({dispatch, product, quantity, favs, favoriteCart}
 
     };
   const clearFavorite = async () => {
-     dispatch(
-            removeFavorite( {id: product._id, quantity})
-        )
+      if (favorites?.items?.length === 1){
+          try{
+              const res = await axios.delete(`/api/favorite/${favorites._id}`)
+              mutateFavorite()
+          }catch (err) {
+              console.log(err)
+          }
+      }else{
+          try{
+              const res = await axios.put(`/api/favorite/${favorites._id}`,
+                  {remove: product._id},
+              )
+              mutateFavorite()
+          }catch (err) {
+              console.log(err)
+          }
 
-       await editFavorites(dispatch, product, session, favs, favoriteCart, {deleteId: product._id})
-    };
+      }
+
+  }
+
+   if(isValidating){
+       return null
+   }
 
 
     return(
@@ -67,28 +87,28 @@ export const FavoriteButton = ({dispatch, product, quantity, favs, favoriteCart}
                     <button className={styles.favoriteButton} onClick={handleSave}>
                         <span className={styles.favoriteSpan}>Save for Later</span>
                         <div className={styles.big}>
-                            <Heart sx={{color: "red", fontSize: 30}}/>
+                            <Heart color={'red'}/>
                         </div>
                         <div className={styles.small}>
-                            <Heart sx={{color: "red", fontSize: 20}}/>
+                            <Heart color={'red'}/>
                         </div>
                     </button> :
                     <button className={styles.savedButton} onClick={clearFavorite}>
                         <span className={styles.favoriteSpan}>Saved</span>
                         <div className={styles.big}>
-                            <Heart sx={{color: "white", fontSize: 30}}/>
+                            <Heart color={'white'}/>
                         </div>
                         <div className={styles.small}>
-                            <Heart sx={{color: "white", fontSize: 20}}/>
+                            <Heart color={'white'}/>
                         </div>
                     </button>
             ) :  <button className={styles.favoriteButton} onClick={handleSave}>
                 <span className={styles.favoriteSpan}>Save for Later</span>
                 <div className={styles.big}>
-                    <Heart sx={{color: "red", fontSize: 30}}/>
+                    <Heart color={'red'}/>
                 </div>
                 <div className={styles.small}>
-                    <Heart sx={{color: "red", fontSize: 20}}/>
+                    <Heart color={'red'}/>
                 </div>
             </button>
             }
@@ -104,7 +124,7 @@ useEffect(()=>{
         setDisabled()
     }
 },[max, setDisabled])
-console.log(max)
+
     return(
 
             <div className={styles.orderContainer}>

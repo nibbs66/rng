@@ -16,6 +16,7 @@ import YouTube from '../icons/YouTube'
 import Twitter from '../icons/Twitter'
 import Facebook from '../icons/Facebook'
 
+
 const Navbar = () => {
     const {data: session} = useSession()
     const {cart, mutateCart, favorites, error, isValidating} = useUser()
@@ -29,7 +30,7 @@ const Navbar = () => {
     const [title, setTitle] = useState('')
     const test = useRef(null);
 
-console.log(cart)
+
     useEffect(()=>{
         if(session){
             setUser(session)
@@ -91,11 +92,11 @@ console.log(cart)
                                     <div className={styles.counter2}>{favorites?.items?.length || 0}</div>
                                 </div>
                             </Link>
-                            <Link href={`/cart/555`} passHref>
+                            <Link href={`/cart/${cart?._id}`} passHref>
                                 <div className={styles.cart}>
                                     <ShoppingCart/>
 
-                                    <div className={styles.counter2}>{cart?.items?.length || 0}</div>
+                                    <div className={styles.counter2}>{cart && cart?.items?.length || 0}</div>
 
                                 </div>
                             </Link>

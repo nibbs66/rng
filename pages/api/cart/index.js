@@ -13,12 +13,12 @@ export default async function handler(req, res) {
     await dbConnect()
 
     if(method==="GET"){
-
+0
         try {
             let carts;
             if (cart) {
 
-                carts = await Cart.find(
+                carts = await Cart.findOne(
                 {userId: cart}
                 );
             }else {
@@ -49,16 +49,17 @@ export default async function handler(req, res) {
         const {items, addToTotal} = req.body
 
         try{
-             await Cart.findOneAndUpdate(
+            const amendedCart =  await Cart.findOneAndUpdate(
                 {userId: cart},
-                {$push: {items: {productId: items.productId, quantity: items.quantity, color: items.color,
-                            size: items.size, name: items.name, modelId: items.modelId, img: items.img, price: items.price}}}
+                {
+                    $push: {items: {productId: items.productId, quantity: items.quantity, color: items.color,
+                            size: items.size, name: items.name, modelId: items.modelId, img: items.img, price: items.price}},
+                    $inc: {total: addToTotal},
+                    new: true
+                }
             )
 
-            const amendedCart = await Cart.findOneAndUpdate(
-                {userId: cart},
-                {$inc: {total: addToTotal},  new: true}
-            )
+
             res.status(200).json(amendedCart)
         }catch(err){
             res.status(500).json(err);

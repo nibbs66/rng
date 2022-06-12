@@ -4,14 +4,18 @@ import Link from 'next/link'
 import {useRouter} from "next/router";
 import ArrowBack from "../icons/ArrowBack";
 import useUser from "../../pages/api/hooks/useUser";
+import {useEffect} from "react";
 
 const CartSummary = ({ setShowModal, product, img, quantity, size, color}) => {
 
     const router = useRouter()
     const {cart, isValidating, mutate, mutateCart} = useUser()
-    console.log(cart)
+
+    useEffect(()=>{
+        mutateCart()
+    },[cart])
     const handleClick = () => {
-            mutateCart('/api/cart', true)
+
         setShowModal()
         router.push(`/cart/${cart._id}`)
     }
@@ -25,7 +29,7 @@ const CartSummary = ({ setShowModal, product, img, quantity, size, color}) => {
         <div className={styles.container}>
             <span onClick={(() => {
                 setShowModal()
-                mutate('/api/cart', true)
+
             })} className={styles.close}>
                   X
               </span>

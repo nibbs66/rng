@@ -9,6 +9,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 
 
     export default NextAuth({
+
         adapter: MongoDBAdapter(clientPromise),
         session: {
             // Choose how you want to save the user session.
@@ -95,9 +96,11 @@ import CredentialsProvider from 'next-auth/providers/credentials'
                     session.id = token.id
 
                 }
+
                 return session
             },
         },
+
         secret: process.env.NEXTAUTH_SECRET,
         jwt: {
             secret: process.env.NEXTAUTH_SECRET,

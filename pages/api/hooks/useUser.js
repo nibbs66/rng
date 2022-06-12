@@ -2,7 +2,8 @@ import useSWR from "swr";
 import axios from 'axios'
 import {useSession} from "next-auth/react";
 import {useEffect, useState} from 'react'
-
+import useLocalStorageState from "use-local-storage-state";
+import { v4 as uuidv4 } from 'uuid';
 const fetcher = async(url) => {
     try{
         const res = await axios.get(url)
@@ -14,15 +15,20 @@ const fetcher = async(url) => {
 
 export default function useUser () {
     const [guestId, setGuestId] = useState('')
-
     const{data: session, status} = useSession()
+    const [guestCart, setGuestCart] = useLocalStorageState('tempRnGCart', {
+        ssr: true,
+        defaultValue: `guest${uuidv4()}`
+    })
 
     const id = session?.id
     useEffect(()=>{
-        const cartId = async() => {
-            const getCart =  await JSON.parse(localStorage.getItem('tempRnGCart'))
-            setGuestId(getCart)
 
+        const cartId = async() => {
+            if(status === 'unauthenticated'){
+                const getCart =  await JSON.parse(localStorage.getItem('tempRnGCart'))
+                setGuestId(getCart)
+            }
         }
        cartId()
     },[])
@@ -30,24 +36,26 @@ export default function useUser () {
     const {data: user, error, isValidating, mutate} = useSWR(id && `/api/users/`+id, fetcher)
     let cartId;
     if(user){
-        cartId = user.cart
+        cartId = id
     }else if(!user){
         cartId =  guestId
     }
-    console.log(cartId)
 
-    const {data: cart, mutate: mutateCart} = useSWR(()=>   `/api/cart/`+cartId , fetcher,
-        {revalidateAll: true})
-    const {data: favorites, mutate: mutateFavorite} = useSWR(()=>user.favorites && `/api/favorite/`+user.favorites, fetcher)
+    const {data: cart, mutate: mutateCart} = useSWR( `/api/cart?cart=${cartId}` , fetcher)
+
+    const {data: favorites, mutate: mutateFavorite} = useSWR(user && `/api/favorite?favorite=${cartId}`, fetcher)
+
 
     return {
         user,
         mutate,
         cart,
+        cartId,
         mutateCart,
         favorites,
         mutateFavorite,
         error,
         isValidating
+
     }
 }

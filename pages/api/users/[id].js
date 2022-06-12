@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     }
     if (method === "PUT") {
         const{password, username}=req.body
-        console.log(id)
+
         if(password) {
             const newPassword = await argon2.hash(password)
             try {

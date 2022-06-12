@@ -6,7 +6,7 @@ const ImageModal = ({img, pic,setShowModal}) => {
     const handlePhoto = (idx) => {
         setIndex(idx)
     };
-console.log(img)
+
     return (
         <div className={styles.container}>
 

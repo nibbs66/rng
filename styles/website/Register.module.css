@@ -1,5 +1,5 @@
 .container{
-    max-height: 80vh;
+    min-height: 80vh;
     width: 100vw;
     padding:  20px;
     display: flex;
@@ -102,6 +102,9 @@
 }
 .error{
     color: red;
+    font-size: 12px;
+    font-weight: 800;
+    text-align: center;
 }
 .options{
     margin-top: 10px;;

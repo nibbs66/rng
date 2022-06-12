@@ -1,5 +1,5 @@
 import Head from 'next/head'
-
+import {getSession} from "next-auth/react";
 import styles from '../styles/Home.module.css'
 import MainLayout from "../components/layouts/MainLayout";
 import {useState} from "react";
@@ -10,10 +10,13 @@ import VendorLogos from "../components/website/VendorLogos";
 
 
 
+
+
 export default function Home({images}) {
 
 
     const [sale, setSale] = useState(false)
+
 
 
 
@@ -41,11 +44,12 @@ export async function getServerSideProps (ctx){
     const host = ctx.req.headers.host;
 
 
-    const res = await axios.get(`http://`+host+`/api/images`);
-
+    const res = await axios.get(`https://`+host+`/api/images`);
+    const session = await getSession(ctx)
     return{
         props:{
-            images: res.data
+            images: res.data,
+            session
         }
     }
 }

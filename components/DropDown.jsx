@@ -35,6 +35,7 @@ const DropDown = () => {
 
             return Object.values(item).join().toLowerCase().includes(searchInput.toLowerCase())
         })
+
         setFilteredResults(filteredData)
         if(searchValue.length === 0){
             setShowDropdown(false)
@@ -50,10 +51,10 @@ const DropDown = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(e.target.value)
+
 
     };
-    console.log(filteredResults)
+
     return (
         <div className={styles.searchBar}>
             <form className={styles.searchWrapper}  ref={test} onSubmit={(e)=>handleSubmit(e.target.value)}>
