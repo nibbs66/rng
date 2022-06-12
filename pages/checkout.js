@@ -57,8 +57,9 @@ const Checkout = () => {
 
             {success && <h1>Order Number: {cart.cartId}</h1>}
             <Head>
-                <Script src="https://js.stripe.com/v3" async></Script>
+              <title>checkout</title>
             </Head>
+            <Script src="https://js.stripe.com/v3" async></Script>
             {!success &&
                 <>
                 {cart ? <h1>Total: €{(cart.total + cart.shipping.price).toFixed(2)}</h1> : <h1>€0.00</h1>}

@@ -49,7 +49,7 @@ useEffect(()=>{
         setShowCheckout(true)
     }
 
-},[session, setShowCheckout])
+},[status, setShowCheckout])
 
     const handleQuantity =  async(e, idx, item) => {
         const{value} = e.target
@@ -67,11 +67,7 @@ useEffect(()=>{
                    addToTotal: (price * difference),
                });
            mutateCart()
-
-
-
-
-       }catch(err){
+        }catch(err){
             console.log(err)
        }
 

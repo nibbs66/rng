@@ -67,7 +67,7 @@ const Register = () => {
             })
         }
         filteredName()
-    },[])
+    },)
 
     const onSubmit = async(data) => {
         try{
@@ -108,16 +108,7 @@ const Register = () => {
     };
 
 
-    const handleNumber = (e) => {
-        setWrongNumber(false)
-        const number = (phone(e.target.value, {country: 'NL'}))
-        if(number.isValid){
-            setNumber(number.phoneNumber)
-        }
-        if(!number.isValid){
-            setWrongNumber(true)
-        }
-    }
+
 
     if(isValidating){
         return null

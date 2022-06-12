@@ -31,7 +31,7 @@ export default function useUser () {
             }
         }
        cartId()
-    },[])
+    },[status])
 
     const {data: user, error, isValidating, mutate} = useSWR(id && `/api/users/`+id, fetcher)
     let cartId;
