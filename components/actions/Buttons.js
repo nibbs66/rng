@@ -13,7 +13,7 @@ import axios from "axios";
 export const FavoriteButton = ({ product}) => {
     const {data: session, status} = useSession()
     const {favorites, mutateFavorite, isValidating} = useUser()
-    console.log(favorites)
+
     const handleSave =  async() => {
        if(status === 'unauthenticated'){
               return null;
@@ -38,7 +38,7 @@ export const FavoriteButton = ({ product}) => {
 
              if (dupSearch.length === 0) {
                 try {
-                     const res = await axios.put(`/api/favorite/${favorite._id}`,
+                     const res = await axios.put(`/api/favorite/${favorites._id}`,
                          {save: product},
                      )
                     mutateFavorite()
@@ -46,7 +46,7 @@ export const FavoriteButton = ({ product}) => {
 
 
                  } catch (err) {
-
+                    console.log(err)
                  }
              }
 
