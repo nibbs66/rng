@@ -8,7 +8,7 @@ import Index from "../shop";
 const Learn = ({image}) => {
     return (
         <div>
-            {<Contact image={image}/>
+            <Contact image={image}/>
         </div>
     );
 };
