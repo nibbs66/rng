@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 
 import {useRouter} from "next/router";
 import styles from "../styles/website/Login.module.css";
-import useLocalStorageState from 'use-local-storage-state'
+
 
 import useUser from "./api/hooks/useUser";
 import MainLayout from "../components/layouts/MainLayout";
@@ -13,9 +13,7 @@ const Success = () => {
     const router = useRouter()
     const [success, setSuccess] = useToggle()
    const {user, cart, mutateCart, isValidating} = useUser()
-    const [id, setId, { removeItem }] = useLocalStorageState('tempRnGCart', {
-        defaultValue: ''
-    })
+
 
     useEffect(() =>{
            const finalizeOrder = async() => {
@@ -49,7 +47,7 @@ const Success = () => {
         console.log(err)
     }
                mutateCart()
-               removeItem()
+
            }
            finalizeOrder()
        },[cart])

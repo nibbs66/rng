@@ -2,7 +2,7 @@ import useSWR from "swr";
 import axios from 'axios'
 import {useSession} from "next-auth/react";
 import {useEffect, useState} from 'react'
-import useLocalStorageState from "use-local-storage-state";
+
 import { v4 as uuidv4 } from 'uuid';
 const fetcher = async(url) => {
     try{
