@@ -52,13 +52,18 @@ const GuestCheckOut = ({setShowModal, setShowCheckout}) => {
                     postalCode: data.postalCode,
                     country: data.country
                 });
-            mutateCart()
+
+            if(res.status===200){
+                setShowCheckout(true)
+                reset()
+                setShowModal()
+                mutateCart()
+            }
+
         }catch(err){
             console.log(err)
         }
-        setShowCheckout(true)
-        reset()
-        setShowModal()
+
 
     };
 
