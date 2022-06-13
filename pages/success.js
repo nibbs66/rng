@@ -23,12 +23,12 @@ const Success = () => {
             {
                 userId: cart?.userId,
                 customer: {
-                    firstName:  user? user.firstName : cart.guestInformation.firstName,
-                    lastName:  user? user.lastName : cart.guestInformation.lastName
+                    firstName:  user? user.firstName : cart?.guestInformation?.firstName,
+                    lastName:  user? user.lastName : cart?.guestInformation.lastName
                 },
-                address: user? user.address : cart.guestInformation.address,
-                email:  user? user.personal.email : cart.guestInformation.email,
-                phone: user? user.personal.phone : cart.guestInformation.phone,
+                address: user? user.address : cart?.guestInformation?.address,
+                email:  user? user.personal.email : cart?.guestInformation?.email,
+                phone: user? user.personal.phone : cart?.guestInformation?.phone,
                 total: cart.total,
                 items: cart.items,
                 purchaseType: 'Web-shop',
