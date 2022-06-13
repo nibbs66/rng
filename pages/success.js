@@ -21,18 +21,18 @@ const Success = () => {
                   try{
         const res = await axios.post('/api/orders',
             {
-                userId: cart.userId,
+                userId: cart?.userId,
                 customer: {
-                    firstName:  user? user.firstName : cart.guestInformation.firstName,
-                    lastName:  user? user.lastName : cart.guestInformation.lastName
+                    firstName:  user? user.firstName : cart?.guestInformation.firstName,
+                    lastName:  user? user.lastName : cart?.guestInformation.lastName
                 },
-                address: user? user.address : cart.guestInformation.address,
-                email:  user? user.personal.email : cart.guestInformation.email,
-                phone: user? user.personal.phone : cart.guestInformation.phone,
-                total: cart.total,
-                items: cart.items,
+                address: user? user.address : cart?.guestInformation.address,
+                email:  user? user.personal.email : cart?.guestInformation.email,
+                phone: user? user.personal.phone : cart?.guestInformation.phone,
+                total: cart?.total,
+                items: cart?.items,
                 purchaseType: 'Web-shop',
-                shippingMethod: cart.shipping
+                shippingMethod: cart?.shipping
             });
         cart.items.map(async(item)=>{
             const inventory = await axios.put(`/api/products/inventory/${item.productId}`,
