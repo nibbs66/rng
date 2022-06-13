@@ -39,12 +39,16 @@ const Success = () => {
                 {quantity: item.quantity})
 
         })
-        const remove = await axios.delete(`/api/cart/delete/${cart._id}`)
-                      if(res.status===201 && remove.status===200){
+                      if(res.status===201){
                           setSuccess()
                       }
                   }catch(err){
         console.log(err)
+    }
+    try{
+        const remove = await axios.delete(`/api/cart/delete/${cart?._id}`)
+    }catch(err){
+         console.log(err)
     }
                mutateCart()
 
