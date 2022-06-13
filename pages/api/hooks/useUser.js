@@ -3,8 +3,8 @@ import axios from 'axios'
 import {useSession} from "next-auth/react";
 import {useEffect, useState} from 'react'
 
-import { v4 as uuidv4 } from 'uuid';
-import {setCookies,getCookie} from "cookies-next";
+
+import {getCookie} from "cookies-next";
 
 const fetcher = async(url) => {
     try{
@@ -14,7 +14,7 @@ const fetcher = async(url) => {
         console.log(err)
     }
 }
-setCookies('RnGCart', `guest${uuidv4()}`, {maxAge: 60 * 6 * 24})
+
 export default function useUser () {
 
     const [guestId, setGuestId] = useState('')
@@ -23,7 +23,7 @@ export default function useUser () {
 
     const id = session?.id
     useEffect(()=>{
-        const guestCookie =  getCookie('RnGCart')
+        const guestCookie =  getCookie('test')
                 setGuestId(guestCookie)
 
     },[])
@@ -36,7 +36,7 @@ export default function useUser () {
         cartId =  guestId
     }
 
-    const {data: cart, mutate: mutateCart} = useSWR( `/api/cart?cart=${cartId}` , fetcher)
+    const {data: cart, mutate: mutateCart, isValidating: validateCart} = useSWR( `/api/cart?cart=${cartId}` , fetcher)
 
     const {data: favorites, mutate: mutateFavorite} = useSWR(user && `/api/favorite?favorite=${cartId}`, fetcher)
 
@@ -46,6 +46,7 @@ export default function useUser () {
         mutate,
         cart,
         cartId,
+        validateCart,
         mutateCart,
         favorites,
         mutateFavorite,

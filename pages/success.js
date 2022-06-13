@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 
 import {useRouter} from "next/router";
 import styles from "../styles/website/Login.module.css";
-
+import { removeCookies } from 'cookies-next';
 
 import useUser from "./api/hooks/useUser";
 import MainLayout from "../components/layouts/MainLayout";
@@ -12,7 +12,7 @@ import axios from "axios";
 const Success = () => {
     const router = useRouter()
     const [success, setSuccess] = useToggle()
-   const {user, cart, mutateCart, isValidating} = useUser()
+   const {user, cart, mutateCart, validateCart} = useUser()
 
 
     useEffect(() =>{
@@ -51,13 +51,13 @@ const Success = () => {
          console.log(err)
     }
                mutateCart()
-
+               removeCookies('test');
            }
            finalizeOrder()
        },[cart])
 
 
-if(isValidating){
+if(validateCart){
     return <h1>Loading</h1>
 }
 

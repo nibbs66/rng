@@ -6,8 +6,8 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import Slider from "../components/website/Slider";
 import VendorLogos from "../components/website/VendorLogos";
-
-
+import { getCookies, getCookie, setCookies, removeCookies } from 'cookies-next';
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -40,21 +40,23 @@ export default function Home({images}) {
 
     )
 }
-export async function getServerSideProps (ctx){
+export async function getServerSideProps ({req, res}){
 
-    const host = ctx.req.headers.host;
-
-    const res = await axios.get(`https://`+host+`/api/images`);
-    const session = await getSession(ctx)
+    const {host} = req.headers;
+    console.log('host',host)
+    const pic = await axios.get(`https://`+host+`/api/images`);
+    setCookies('test', `value${uuidv4()}`, { req, res, maxAge: 60 * 6 * 24 });
 
     return{
         props:{
-            images: res.data,
-            session
+            images: pic.data,
+
 
         }
     }
 }
+
+
 Home.getLayout = function getLayout(page){
     return(
         <MainLayout>

@@ -20,7 +20,7 @@ const CartSummary = ({ setShowModal, product, img, quantity, size, color}) => {
         router.push(`/cart/${cart._id}`)
     }
 
-console.log(cart)
+
 
    if(isValidating){
        return null
