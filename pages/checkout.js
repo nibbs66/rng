@@ -19,7 +19,7 @@ const Checkout = () => {
     const [clientSecret, setClientSecret] = useState('');
     const [paymentIntent, setPaymentIntent] = useState('')
     const [success, setSuccess] = useToggle()
-    const {user,cart, mutateCart, favorites, error, isValidating} = useUser()
+    const {user,cart} = useUser()
     const router = useRouter()
 
     useEffect(() => {
@@ -27,7 +27,7 @@ const Checkout = () => {
             try {
                 const res = await axios.post(`/api/stripe/stripe_intent`, {
                     headers: {'Content-Type': 'application/json'},
-                    amount: Math.round((cart?.total + cart?.shipping.price) * 100),
+                    amount: Math.round((cart.total + cart.shipping.price) * 100),
                     items: cart,
                     payment_intent_id: '',
                 })
@@ -51,21 +51,19 @@ const Checkout = () => {
         appearance,
 
     };
-    if(isValidating){
-        return null
-    }
+
 
     return (
         <div className={styles.container}>
 
-            {success && <h1>Order Number: {cart?.cartId}</h1>}
+            {success && <h1>Order Number: {cart.cartId}</h1>}
             <Head>
               <title>checkout</title>
             </Head>
             <Script src="https://js.stripe.com/v3" async></Script>
             {!success &&
                 <>
-                {cart ? <h1>Total: €{(cart?.total + cart?.shipping.price).toFixed(2)}</h1> : <h1>€0.00</h1>}
+                {cart ? <h1>Total: €{(cart.total + cart.shipping.price).toFixed(2)}</h1> : <h1>€0.00</h1>}
 
             <div className={styles.formContainer}>
 
