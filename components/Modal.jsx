@@ -6,6 +6,7 @@ import Login from "./website/Login";
 import CartSummary from "./website/CartSummary";
 import ImageModal from "./website/ImageModal";
 import GuestCheckOut from "./website/GuestCheckOut";
+import NieuwModal from "./admin/NieuwModal";
 /*import CheckoutForm from './checkout/CheckoutForm'
 import {useRouter} from "next/router";
 import CartSummary from "./website/CartSummary";
@@ -36,6 +37,7 @@ const Modal = ({showModal, setShowModal, title, location, pic, img, product, siz
                 {title === 'Cart' && <CartSummary quantity={quantity} size={size} color={color} showModal={showModal} setShowModal={setShowModal} product={product} img={img}/>}
                 {title === 'Photo' && <ImageModal showModal={showModal} setShowModal={setShowModal} img={img} pic={pic}/>}
                 {title === 'Guest' && <GuestCheckOut handleClick={handleClick} setShowModal={setShowModal} setShowCheckout={setShowCheckout}/>}
+                {title === 'Nieuw' && <NieuwModal setShowModal={setShowModal}/>}
             </div>
 
 

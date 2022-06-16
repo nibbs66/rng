@@ -1,0 +1,69 @@
+.chart{
+    padding: 20px;
+    border-radius: 10px;
+    -webkit-box-shadow: 5px 5px 17px 5px rgba(0, 0, 0, 0.66);
+    box-shadow: 5px 5px 17px 5px rgba(0, 0, 0, 0.66);
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+
+    color: lightslategray;
+}
+.title{
+    margin-bottom: 20px;
+}
+.button{
+    margin-left: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 3px 5px;
+}
+.webButton{
+    margin-left: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 3px 5px;
+    color: #8884d8;
+    background-color: rgba(136, 132, 216, 0.2);
+}
+.rentalButton{
+    margin-left: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 3px 5px;
+    color: #82ca9d;
+    background-color: rgba(130, 202, 157, 0.2);
+}
+.cursButton{
+    margin-left: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 3px 5px;
+    color: #2dc6d3;
+    background-color: rgba(45, 198, 211, 0.2);
+}
+.serviceButton{
+    margin-left: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 3px 5px;
+    color: #6e7b8f;
+    background-color: rgba(110, 123, 143, 0.2);
+}
+.resetButton{
+    margin-left: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 3px 5px;
+    color: indianred;
+    background-color: rgba(205, 92, 92, 0.2);
+}
+.chartGrid{
+    stroke: lightslategray;
+}

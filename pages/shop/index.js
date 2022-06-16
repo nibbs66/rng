@@ -5,7 +5,7 @@ import Link from "next/link"
 import CategoryCard from "../../components/website/CategoryCard";
 import axios from "axios";
 import Head from "next/head";
-
+import { v4 as uuidv4 } from 'uuid';
 import ArrowBack from "../../components/icons/ArrowBack";
 import MainLayout from "../../components/layouts/MainLayout";
 

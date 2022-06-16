@@ -1,0 +1,11 @@
+.container{
+    flex: 6;
+}
+.wrapper{
+    flex-direction: column;
+
+}
+.widgetContainer{
+    display: flex;
+    margin: 20px;
+}
