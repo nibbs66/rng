@@ -6,6 +6,8 @@ import axios from "axios";
 //import NewSale from "../../../components/admin/NewSale";
 //import NewUser from "../../../components/admin/NewUser";
 import useToggle from "../../../components/hooks/useToggle";
+import AdminLayout from "../../../components/layouts/AdminLayout";
+
 //import Rental from "../../../components/admin/Rental";
 
 
@@ -45,7 +47,13 @@ const New = ({category,  agency}) => {
 
 
 export default New;
-New.layout = "L2";
+New.getLayout = function getLayout(page){
+    return(
+        <AdminLayout>
+            {page}
+        </AdminLayout>
+    )
+}
 
     export const getServerSideProps = async(ctx) => {
         const host = ctx.req.headers.host;
