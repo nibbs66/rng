@@ -53,7 +53,8 @@ const Products = ({products, categories}) => {
         setNewManufacturer([...new Set(initialMan)])
 
 
-       
+        /*const newMans =  products.filter((group)=>group.manufacturer!==products[0].manufacturer)
+               console.log(newMans)*/
 
     },[initialMan])
     const columns = [

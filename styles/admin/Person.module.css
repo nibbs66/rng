@@ -1,0 +1,213 @@
+.container{
+    flex: 6;
+
+    flex-direction: column;
+}
+.top{
+    padding: 10px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+    box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+    margin: 20px;
+    border-radius: 10px;
+    color: #1980b5;
+}
+.wrapper{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.left{
+    flex: 2;
+    min-height: 60vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    border-right: 1px solid darkslategray;
+
+
+
+}
+.avatarContainer{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0;
+
+}
+.avatar{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    display: flex;
+    position: relative;
+}
+.avatarText{
+    height: 100px;
+    width: 100px;
+    top: 0;
+    font-size: 40px;
+    border-radius: 50%;
+    background-color: rgba(25, 128, 181, 0.2);
+    color: #1980b5;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.lowerContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.activityContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 20vh;
+    border: 1px solid darkslategray;
+    padding: 10px;
+}
+.activities{
+    display: flex;
+    flex-direction: column;
+}
+.right{
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    color: #1980b5;
+    width: 100%;
+
+
+
+}
+.infoContainer{
+    padding: 10px;
+}
+
+.right .infoContainer{
+    position: relative;
+    margin: 0 10px;
+}
+.infoTitle{
+    display: flex;
+    background-color: rgba(25, 128, 181, 0.2);
+    border-radius: 5px;
+    align-items: center;
+    justify-content: space-between;
+
+}
+.infoTitle:hover{
+    font-weight: 800;
+}
+.iconContainer{
+
+}
+.right .infoTitle{
+    position: relative;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.right .infoTitle::before{
+    position: absolute;
+    top: 50%;
+    right: -5px;
+    font-size: 30px;
+    transform: translateY(-50%);
+}
+.info{
+
+}
+.infoActive{
+    padding: 10px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    //justify-content: flex-start;
+}
+.right .info{
+    position: relative;
+    background: white;
+    height: 0;
+    font-size: 20px;
+    text-align: justify;
+    width: 780px;
+    overflow: hidden;
+
+}
+.right .certActive{
+    display: flex;
+    flex-direction: column;
+
+   padding: 10px;
+    width: 100%;
+
+}
+.containerItem{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.live{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 5px;
+}
+.notLive{
+    position: relative;
+    height: 0;
+    overflow: hidden;
+}
+.check{
+   color: green;
+    cursor: pointer;
+}
+.hr{
+    width: 100%;
+    border: none;
+    border-bottom: 0.5px solid lightslategray;
+}
+.span{
+   margin: 0 10px 10px 0;
+    width: 100%;
+    font-size: 17px;
+    padding: 5px 10px;
+}
+.span>input{
+    flex: 1;
+    min-width: 200px;
+    margin: 10px 0px;
+    padding: 10px;
+    border-radius: 7px;
+    border: 1px solid lightgray;
+}
+.span>input:focus{
+    outline: none;
+    border: 2px solid darkgray;
+}
+.editButton{
+    padding: 5px 15px;
+    width: 15%;
+    font-size: 17px;
+    background-color: rgba(205, 92, 92, 0.2);
+    box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24);
+    transition: 0.2s all;
+    color: indianred;
+    border: none;
+    border-right: 5px;
+    cursor: pointer;
+}

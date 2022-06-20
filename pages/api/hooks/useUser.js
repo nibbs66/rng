@@ -1,20 +1,10 @@
 import useSWR from "swr";
-import axios from 'axios'
+
 import {useSession} from "next-auth/react";
 import {useEffect, useState} from 'react'
-
+import {fetcher} from "../../../components/helper/fetcher";
 
 import {getCookie} from "cookies-next";
-
-const fetcher = async(url) => {
-    try{
-        const res = await axios.get(url)
-        return res.data
-    }catch(err){
-        console.log(err)
-    }
-}
-
 export default function useUser () {
 
     const [guestId, setGuestId] = useState('')
@@ -23,7 +13,7 @@ export default function useUser () {
 
     const id = session?.id
     useEffect(()=>{
-        const guestCookie =  getCookie('test')
+        const guestCookie =  getCookie('visitor')
                 setGuestId(guestCookie)
 
     },[])

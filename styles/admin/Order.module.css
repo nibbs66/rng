@@ -1,0 +1,234 @@
+.container{
+    flex: 6;
+    padding: 20px;
+    color: #1980b5;
+}
+.productTop {
+    display: flex;
+
+}
+
+.productTopLeft,
+.productTopRight {
+    flex: 1;
+}
+
+.productTopLeft  {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin: 20px;
+    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    border-radius: 10px;
+
+
+}
+.productTopLeft>h1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.productImgContainer {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 20px;
+
+
+}
+
+.shippingContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+
+}
+.productInfoLeft .productInfoRight .productInfoCenter {
+    flex: 1;
+    display: flex;
+    margin-left: 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+.info{
+    display: flex;
+    align-items: center;
+
+}
+.info>h3{
+    margin-right: 10px;
+}
+.productInfoRight .info:last-child{
+    flex-direction: column;
+}
+.productBottom {
+    padding: 20px 30px;
+    margin: 20px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    color: #1980b5;
+}
+.productForm {
+    padding: 30px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.productFormLeft {
+    display: flex;
+    flex-direction: column;
+
+
+}
+
+.productFormLeft > label {
+    margin-bottom: 10px;
+}
+
+.productFormLeft> input, .productFormCenter > input {
+    margin-bottom: 10px;
+    width: 200px;
+    border: none;
+    padding: 5px;
+    border-bottom: 1px solid gray;
+}
+.productFormLeft> input:focus, .productFormCenter > input:focus {
+    outline: none;
+    border-bottom: 2px solid #1980b5;
+}
+
+.productFormLeft >select{
+    margin-bottom: 10px;
+}
+.productUploadImg{
+    border-radius: 10px;
+    margin-right: 20px;
+}
+.productFormCenter{
+    display: flex;
+    flex-direction: column;
+
+    padding-top: 20px;
+
+}
+.productFormCenter>label{
+    margin-bottom: 10px;
+
+}
+.productFormCenter > textarea {
+    margin-bottom: 10px;
+    width: 250px;
+    height: 100px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+.productFormCenter > textarea:focus {
+    border: 2px solid #1980b5;
+}
+.productFormRight>button{
+    border: none;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: rgba(205, 92, 92, 0.5);
+    box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24);
+    transition: 0.2s all;
+    color: indianred;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+
+}
+.productFormRight>button:hover{
+    box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.5);
+}
+.productFormRight>button:active{
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+.productFormRight{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.productUpload{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.productUpload>label{
+    margin-left: 20px;
+}
+.productButton{
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: darkblue;
+    color:white;
+    font-weight: 600;
+    cursor: pointer;
+}
+.received{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    background-color: blue;
+    border: none;
+    cursor: pointer;
+}
+.prepared{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    background-color: orange;
+    border: none;
+    cursor: pointer;
+}
+.shipped{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    background-color: green;
+    border: none;
+    cursor: pointer;
+}
+.delivered{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    background-color: lightslategray;
+    border: none;
+    cursor: pointer;
+}
+.cancelled{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    background-color: darkred;
+    border: none;
+    cursor: pointer;
+}

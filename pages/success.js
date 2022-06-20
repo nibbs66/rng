@@ -51,7 +51,7 @@ const Success = () => {
          console.log(err)
     }
                mutateCart()
-               removeCookies('test');
+               removeCookies('visitor');
            }
            finalizeOrder()
        },[cart])

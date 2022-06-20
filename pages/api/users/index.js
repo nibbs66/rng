@@ -69,7 +69,7 @@ export default async function handler(req, res) {
 
             if (pUser || rUser) { return res.status(422).send('Username is already taken');}
             const user = await PendingUser.create(newUser);
-            await sendConfirmationEmail({toUser: user.firstName, id: user._id, userRequest: 'register'})
+            await sendConfirmationEmail({toUser: user.firstName, toEmail: user.personal.email, id: user._id, userRequest: 'register'})
             res.status(201).json('Please check your email to activate account.')
         }catch(err){
             res.status(500).json(err);

@@ -1,10 +1,9 @@
 import styles from '../../../styles/admin/New.module.css'
-
 import {useRouter} from "next/router";
 import ProductInput from "../../../components/admin/ProductInput";
 import axios from "axios";
-//import NewSale from "../../../components/admin/NewSale";
-//import NewUser from "../../../components/admin/NewUser";
+import NewSale from "../../../components/admin/NewSale";
+import NewUser from "../../../components/admin/NewUser";
 import useToggle from "../../../components/hooks/useToggle";
 import AdminLayout from "../../../components/layouts/AdminLayout";
 
@@ -31,8 +30,11 @@ const New = ({category,  agency}) => {
     return (
         <div className={styles.container}>
             <div className={styles.newContainer}>
-                {id==='product' && <ProductInput  id={id} handleCreate={handleCreate} category={category}
-                />}
+                {id==='product' && <ProductInput  id={id} handleCreate={handleCreate} category={category}/>}
+                {id==='user' &&
+                    <NewUser  id={id} agency={agency} handleCreate={handleCreate} success={success} setSuccess={setSuccess}/>}
+                {id === 'sale' &&
+                    <NewSale/>}
                 {/* {id==='rental' && <Rental  id={id} handleCreate={handleCreate} category={category}
                 />}
                 {id === 'sale' &&
