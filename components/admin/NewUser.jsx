@@ -1,33 +1,93 @@
-import  {useState, useMemo} from 'react';
-import styles from "../../styles/admin/NewUser.module.css";
+import {useState, useEffect, useMemo} from 'react';
+import styles from '../../styles/admin/NewUser.module.css'
 import Image from "next/image";
-import Upload from "../icons/Upload";
-import {useRouter} from "next/router";
-import Personal from "./user/Personal";
-import useToggle from "../hooks/useToggle";
-const initialUser = ['customer']
-const NewUser = ({ id, handleCreate, agency, success,  setSuccess }) => {
+import Upload from "../../components/icons/Upload";
 
+import {useRouter} from "next/router";
+import useToggle from "../../components/hooks/useToggle";
+const initialUser = ['customer']
+import * as yup from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import countryList from 'react-select-country-list'
+import phone from 'phone'
+import postalCodes from 'zipcodes-regex'
+import useRegister from '../../pages/api/hooks/useRegister';
+import axios from "axios";
+
+
+const NewUser = ({ id, agency }) => {
+
+    const options = useMemo(() => countryList().getData(), [])
     const router = useRouter()
     const {params} = router.query
     const [employee, setEmployee] = useToggle()
+    const [message, setMessage] = useState('')
+    const [checkUser, setCheckUser] = useState([])
     const [userType, setUserType] = useState(initialUser)
+    const [birthday, setBirthday] = useState(true)
     const [section, setSection] = useState('')
     const [showPicture, setShowPicture] = useToggle()
     const [inputs, setInputs] = useState({});
-    const [emergency, setEmergency] = useState({});
-    const [address, setAddress] = useState({});
-    const [personal, setPersonal] = useState({})
+
     const [certification, setCertification] = useState({})
-    const [hire, setHire] = useState({})
+
     const [levels, setLevels] = useState([])
     const [file, setFile] = useState(null)
     const [showLevels, setShowLevels] = useToggle()
     const [country, setCountry] = useState({country: ''})
     const [experience, setExperience] = useState([])
     const [levelSelector, setLevelSelector] = useState('')
+    const [code, setCode] =useState(postalCodes.NL)
+    const {user, isValidating} = useRegister()
 
+    const schema = yup.object().shape({
+        firstName: yup.string().required(),
+        lastName: yup.string().required(),
+        username: yup.string()
+            .required()
+            .notOneOf([checkUser], 'Username has been taken.  Username must be unique.'),
+        email: yup.string().email().required(),
+        country: yup.string().required(),
+        address: yup.string().required(),
+        city: yup.string().required(),
+        postalCode: yup.string().required()
+            .matches({code}, 'Post Code does not match country format'),
+        phone: yup.string().required('Please enter your phone number for home'),
+        dob: yup.string().required('Please enter your date of birth'),
+        password: yup.string()
+            .required("Required")
+            .min(8, "Must be 8 characters or more")
+            .matches(/[a-z]+/, "One lowercase character")
+            .matches(/[A-Z]+/, "One uppercase character")
+            .matches(/[@$!%*#?&]+/, "One special character")
+            .matches(/\d+/, "One number"),
+        certificationAgency: yup.string(),
 
+        emergencyFirstName: yup.string().required(),
+        emergencyLastName: yup.string().required(),
+        emergencyEmail: yup.string().email().required(),
+        emergencyPhone: yup.string().required('Please enter your phone number for emergency'),
+        diverNumber: yup.string(),
+        instructorNumber: yup.string(),
+        position: yup.string(),
+        hireDate: yup.string(),
+        date: yup.string(),
+
+    })
+    const { register, handleSubmit,  formState: {errors}, reset, resetField } = useForm({
+        resolver: yupResolver(schema),
+    });
+    useEffect(()=>{
+        const filteredName = () => {
+            user?.map((name,idx)=>{
+                setCheckUser(prev=> {return [...prev, name.personal.username.toLowerCase()]
+                })
+
+            })
+        }
+        filteredName()
+    },[])
 
 
 
@@ -56,40 +116,20 @@ const NewUser = ({ id, handleCreate, agency, success,  setSuccess }) => {
             setEmployee()
             setUserType(prev=>[...prev, 'employee'])
         }else if(employee){
-
+            setEmployee()
             setUserType(initialUser)
         }
 
     };
-    const handleEmergency = (e) => {
 
-        setEmergency(prev=>{
-            return {...prev, [e.target.name]: e.target.value}
-        })
-
-    };
-    const handlePersonal = (e) => {
-
-        setPersonal(prev=>{
-            return {...prev, [e.target.name]: e.target.value}
-        })
-
-    };
-    const handleHire = (e) => {
-
-        setHire(prev=>{
-            return {...prev, [e.target.name]: e.target.value}
-        })
-
-    };
     const handleCertification = (e) => {
         e.preventDefault()
         setCertification(prev=>{
             return {...prev, [e.target.name]: e.target.value}
         })
 
-      if(certification?.certificationAgency){
-          setLevelSelector(agency.filter((group)=>group.name ===certification.certificationAgency)[0].levels)
+        if(certification?.certificationAgency){
+            setLevelSelector(agency.filter((group)=>group.name ===certification.certificationAgency)[0].levels)
 
         }
 
@@ -107,120 +147,158 @@ const NewUser = ({ id, handleCreate, agency, success,  setSuccess }) => {
     const addExperience = () => {
         setExperience(prev=> [...prev, {...certification, certificationLevel: levels}])
         setShowLevels()
+        resetField('diverNumber')
+        resetField('instructorNumber')
+        resetField('certificationAgency')
+        resetField('date')
 
     }
     const handleReset = () => {
-        setSuccess()
-        setInputs({})
-        setLevels([])
-        setExperience([])
-        setCertification({})
-        setPersonal({})
-        setEmergency({})
-        setAddress({})
-        setHire({})
+
         router.push('/admin/new/user')
 
     }
+    if(isValidating){
+        return null
+    }
+    const onSubmit = async(data) => {
+        try {
+            const res = await axios.post(`/api/users`,
+                {
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    password: data.password,
+                    personal: {
+                        phone: data.phone,
+                        email: data.email,
+                        username: data.username,
+                        dob: data.dob,
+                    },
+                    address: {
+                        address: data.address,
+                        city: data.city,
+                        postalCode: data.postalCode,
+                        country: data.country
+                    },
+                    experience: experience,
+                    emergencyContact: {
+                        firstName: data.emergencyFirstName,
+                        lastName: data.emergencyLastName,
+                        email: data.emergencyEmail,
+                        phone: data.emergencyPhone
+                    },
+                    employeeInfo: {
+                        hireDate: data.hireDate,
+                        position: data.position
+
+                    },
+                    userType,
+                    isEmployee: employee
+                });
+
+            setMessage(res.data)
+            if (res.statusText === 'Created') {
+                reset()
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.top}>
+
+        <form className={styles.container}  onSubmit={handleSubmit(onSubmit)}>
+            {message.length > 0 && <h1 className={styles.success}>{inputs.firstName} {inputs.lastName} successfully Added!  Check email to validate account.</h1>}
+            {message.length === 0 &&  <div className={styles.top}>
                 <h1 className={styles.h1}>
                     Add User
                 </h1>
-            </div>
+            </div>}
 
             <div className={styles.bottom}>
-            <div className={styles.left}>
-                {showPicture ? <Image width={100} height={100} objectFit='cover'
-                        className={styles.img}
-                        src={ file
-                            ? URL.createObjectURL(file)
-                            : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-                        }
+                <div className={styles.left}>
+                    {showPicture ? <Image width={100} height={100} objectFit='cover'
+                                          className={styles.img}
+                                          src={ file
+                                              ? URL.createObjectURL(file)
+                                              : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                                          }
 
 
-                        alt=""
-                /> :  <div className={styles.avatarContainer}>
-                    <div className={styles.avatar}>
-                        <div className={styles.avatarText}>
-                            {inputs.firstName?.length > 0 && <> {inputs.firstName[0].toUpperCase()}</> }
-                            {inputs.lastName?.length > 0 && <>{inputs.lastName[0].toUpperCase()}</>}
+                                          alt=""
+                    /> :  <div className={styles.avatarContainer}>
+                        <div className={styles.avatar}>
+                            <div className={styles.avatarText}>
+                                {inputs.firstName?.length > 0 && <> {inputs.firstName[0].toUpperCase()}</> }
+                                {inputs.lastName?.length > 0 && <>{inputs.lastName[0].toUpperCase()}</>}
+                            </div>
                         </div>
-                    </div>
-                </div>}
-                <div className={styles.imgInput}>
+                    </div>}
+                    <div className={styles.imgInput}>
 
-                    <label htmlFor="file" className={styles.iconContainer} onClick={()=>setShowPicture(true)}>
-                        Upload Image: <Upload className={styles.icon} />
-                    </label>
-                    <input
-                        type="file"
-                        id="file"
-                        onChange={(e) => setFile(e.target.files[0])}
-                        style={{ display: "none"}}
-                    />
+                        <label htmlFor="file" className={styles.iconContainer} onClick={()=>setShowPicture(true)}>
+                            Upload Image: <Upload className={styles.icon} />
+                        </label>
+                        <input
+                            type="file"
+                            id="file"
+                            onChange={(e) => setFile(e.target.files[0])}
+                            style={{ display: "none"}}
+                        />
+                        {errors &&
+                            <div className={styles.error}>
+                                <p>{errors.firstName?.message}</p>
+                                <p>{errors.lastName?.message}</p>
+                                <p>{errors.username?.message}</p>
+                                <p>{errors.email?.message}</p>
+                                <p>{errors.password?.message}</p>
+                                <p>{errors.confirmPassword?.message}</p>
+                                <p>{errors.country?.message}</p>
+                                <p>{errors.phone?.message}</p>
+                                <p>{errors.address?.message}</p>
+                                <p>{errors.city?.message}</p>
+                                <p>{errors.state?.message}</p>
+                                <p>{errors.postalCode?.message}</p>
+                                <p>{errors.position?.message}</p>
+                                <p>{errors.hireDate?.message}</p>
+                                <p>{errors.emergencyFirstName?.message}</p>
+                                <p>{errors.emergencyLastName?.message}</p>
+                                <p>{errors.emergencyPhone?.message}</p>
+                                <p>{errors.emergencyEmail?.message}</p>
+                                <p>{errors.certificationAgency?.message}</p>
+                                <p>{errors.date?.message}</p>
+                                <p>{errors.diverNumber?.message}</p>
+                                <p>{errors.instructorNumber?.message}</p>
 
-                    <div className={styles.buttonContainer}>
-                        {id && <button className={styles.button} onClick={()=>handleCreate({
-                            ...inputs,  personal, address: {...address, country: country.country}, experience: experience, emergencyContact: emergency, employeeInfo: hire, userType, isEmployee: employee
+                            </div>
 
-                        })}>CREATE
-                            NEW {id.toUpperCase()}</button>}
-                    </div>
-
-                </div>
-                <div className={styles.list}>
-                    <ul className={styles.ul}>
-                        {inputs.firstName?.length > 0 && <li  className={styles.li}><h3>Personal</h3></li>}
-                        {inputs.firstName?.length > 0 && <li  className={styles.li}><b>Voornaam:</b> {inputs.firstName}</li>}
-                        {inputs.lastName?.length > 0 && <li  className={styles.li}><b>Achternaam:</b> {inputs.lastName}</li>}
-                        {personal.username?.length > 0 && <li  className={styles.li}><b>Username:</b> {personal.username}</li>}
-                        {address.address?.length > 0 && <li  className={styles.li}><b>Address:</b> {address.address}</li>}
-                        {address.city?.length > 0 && <li  className={styles.li}><b>City:</b> {address.city}</li>}
-                        {address.postalCode?.length > 0 && <li  className={styles.li}><b>Postal Code:</b> {address.postalCode}</li>}
-                        {country.country?.length > 0 && <li  className={styles.li}><b>Country:</b> {country.country}</li>}
-                        {personal.email?.length > 0 && <li  className={styles.li}><b>Email:</b> {personal.email}</li>}
-                        {personal.phone?.length > 0 && <li  className={styles.li}><b>Phone:</b> {personal.phone}</li>}
-                        {personal.dob?.length > 0 && <li  className={styles.li}><b>DOB:</b> {personal.dob}</li>}
-                        {experience?.length > 0 && <li  className={styles.li}><h3>Certifications</h3> </li>}
-                        {experience?.length > 0 && experience?.map((agency, idx) => (
-                            <li className={styles.li} key={agency.idx}><b>Cert Added:</b> {agency.certificationAgency}</li>
-                        ))
                         }
-                        {emergency.firstName?.length > 0 && <li  className={styles.li}><h3>Emergency Contact</h3></li>}
-                        {emergency.firstName?.length > 0 && <li  className={styles.li}><b>Voornaam:</b> {emergency.firstName}</li>}
-                        {emergency.lastName?.length > 0 && <li  className={styles.li}><b>Achternaam:</b> {emergency.lastName}</li>}
-                        {emergency.email?.length > 0 && <li  className={styles.li}><b>Email:</b> {emergency.email}</li>}
-                        {emergency.phone?.length > 0 && <li  className={styles.li}><b>Phone:</b> {emergency.phone}</li>}
-                        {employee && <li  className={styles.li}><h3>Employee</h3></li>}
-                        {hire.hireDate?.length > 0 && <li  className={styles.li}><b>Hire Date:</b> {hire.hireDate}</li>}
-                        {hire.position?.length > 0 && <li  className={styles.li}><b>Position:</b> {hire.position}</li>}
+                        <div>
 
+                        </div>
 
+                        <div className={styles.buttonContainer}>
+                            {id && <button className={styles.button} type='submit'>CREATE
+                                NEW {id.toUpperCase()}</button>}
+                        </div>
 
-                    </ul>
+                    </div>
                 </div>
-            </div>
-                {!success && <div className={styles.right}>
-                    <form action="" className={styles.form}>
+                 <div className={styles.right}>
+                    <div  className={styles.form}  onSubmit={handleSubmit(onSubmit)}>
                         <div className={styles.rightTop}>
 
                             <div className={styles.name}>
                                 <label className={styles.label}>Voornaam:</label>
-                                <input className={styles.topInput} type="text" name='firstName' placeholder='voornaam'
-                                       onChange={handleChange}/>
+                                <input className={styles.topInput} {...register("firstName")} placeholder="voornaam" onChange={handleChange}/>
                                 <label className={styles.label}>Achternaam:</label>
-                                <input className={styles.topInput} type="text" name='lastName' placeholder='achternaam'
-                                       onChange={handleChange}/>
+                                <input className={styles.topInput} {...register("lastName")} placeholder="achternaam" onChange={handleChange}/>
                             </div>
                             <div className={styles.inputContainer}>
                                 <label className={styles.label}>Temporary Password:</label>
-                                <input className={styles.topInput} type="password" name="password"
-                                       placeholder='password...' onChange={handleChange}/>
+                                <input className={styles.topInput} placeholder="password" type='password'{...register("password")}/>
                             </div>
-                            <div className={styles.inputContainer}>
+                            <div className={styles.topInputContainer}>
                                 <label className={styles.label}>Employee?</label>
                                 <div className={styles.checkBox}>
                                     <label className={styles.label}>Ja</label>
@@ -229,7 +307,7 @@ const NewUser = ({ id, handleCreate, agency, success,  setSuccess }) => {
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                     <div className={styles.infoContainer}>
                         <div className={styles.infoTitle} onClick={(e) => handleClick('Personal')}>
                             <span>Personal</span>
@@ -239,8 +317,46 @@ const NewUser = ({ id, handleCreate, agency, success,  setSuccess }) => {
                         </div>
                         <div className={section === 'Personal' ? styles.infoActive : styles.info}>
 
-                            <Personal setPersonal={setPersonal} setCountry={setCountry} country={country}
-                                      setAddress={setAddress}/>
+                            <span className={styles.span}>
+                                <b>Username:</b>    <input className={styles.topInput}  {...register("username")} placeholder="username" />
+                            </span>
+                            <span className={styles.span}>
+                                <b>Country:</b>
+                            <select className={styles.topInput} {...register("country")} onChange={(e) => {
+                                setCountry(e.target.value)
+                                setCode(postalCodes[e.target.value])
+                            }}>
+                            <option value="NL">NL</option>
+                            <option value="DE">DE</option>
+                            <option value="BE">BE</option>
+                                {options.map((country, idx)=>(
+                                    <option key={idx} value={country.value}>{country.value}</option>
+                                ))}
+                        </select>
+
+                                </span>
+                            <span className={styles.span}>
+                                <b>Address:</b>   <input className={styles.topInput} {...register("address")} placeholder="address" type="text" />
+                                </span>
+
+                            <span className={styles.span}>
+                                <b>City:</b>   <input className={styles.topInput} {...register("city")} placeholder="city" type="text" />
+                                </span>
+                            <span className={styles.span}>
+                                <b>Postal Code:</b>   <input className={styles.topInput} {...register("postalCode")}  placeholder="postal code" type="text" />
+                                </span>
+                            <span className={styles.span}>
+                                <b>Email:</b>   <input className={styles.topInput} placeholder="email" {...register("email")} />
+                                </span>
+
+                            <span className={styles.span}>
+                                <b>Phone:</b>   <input className={styles.topInput} placeholder="phone" {...register("phone")} />
+                                </span>
+
+                            {birthday && <span className={styles.span}>
+                                <b>Birthday:</b>   <input className={styles.topInput} {...register("dob")} type="date" />
+                                </span>}
+
 
                         </div>
                     </div>
@@ -256,7 +372,7 @@ const NewUser = ({ id, handleCreate, agency, success,  setSuccess }) => {
                         <div className={section === 'Cert' ? styles.infoActive : styles.info}>
                          <span className={styles.span}>
                             <b>Agency:</b>
-                            <select name="certificationAgency" required onChange={handleCertification}
+                            <select {...register("certificationAgency")}  onChange={handleCertification}
                                     className={styles.topInput}>
                                <option value=""></option>
                                 {agency.map((group) => (
@@ -265,18 +381,14 @@ const NewUser = ({ id, handleCreate, agency, success,  setSuccess }) => {
                            </select>
                              </span>
                             <span className={styles.span}>
-                            <b>Diver Number:</b>   <input className={styles.topInput} name='diverNumber' type='text'
-                                                          placeholder='diver number...' onChange={handleCertification}/>
+                            <b>Diver Number:</b>   <input className={styles.topInput} {...register("diverNumber")} placeholder="Diver Number" onChange={handleCertification}/>
                              </span>
 
                             <span className={styles.span}>
-                                <b>Date:</b>   <input className={styles.topInput} name='date' type='date'
-                                                      onChange={handleCertification}/>
+                                <b>Date:</b>   <input className={styles.topInput} {...register("date")} type="date" onChange={handleCertification}/>
                             </span>
                             <span className={styles.span}>
-                                <b>Instructor:</b>   <input className={styles.topInput} name='instructorNumber'
-                                                            type='text' placeholder='instructor...'
-                                                            onChange={handleCertification}/>
+                                <b>Instructor:</b>   <input className={styles.topInput} {...register("instructorNumber")} placeholder="Instructor" onChange={handleCertification}/>
                             </span>
                             <div className={styles.certTitle} onClick={() => (setShowLevels())}>
                                 Certification Levels
@@ -314,6 +426,7 @@ const NewUser = ({ id, handleCreate, agency, success,  setSuccess }) => {
                             </div>
                         </span>}
 
+
                         </div>
                     </div>
 
@@ -326,21 +439,17 @@ const NewUser = ({ id, handleCreate, agency, success,  setSuccess }) => {
                         </div>
                         <div className={section === 'Emergency' ? styles.infoActive : styles.info}>
                         <span className={styles.span}>
-                                <b>Voornaam:</b>   <input className={styles.topInput} name='firstName' type='text'
-                                                          placeholder='voornaam...' onChange={handleEmergency}/>
+                                <b>Voornaam:</b>   <input className={styles.topInput} {...register("emergencyFirstName")} placeholder="voornaam" />
                             </span>
                             <span className={styles.span}>
-                                <b>Achternaam:</b>   <input className={styles.topInput} name='lastName' type='text'
-                                                            placeholder='achternaam...' onChange={handleEmergency}/>
+                                <b>Achternaam:</b>   <input className={styles.topInput} {...register("emergencyLastName")} placeholder="achternaam" />
                             </span>
                             <span className={styles.span}>
-                                <b>Email:</b>   <input className={styles.topInput} name='email' type='text'
-                                                       placeholder='email...' onChange={handleEmergency}/>
+                                <b>Email:</b>    <input className={styles.topInput} placeholder="email" {...register("emergencyEmail")} />
                                 </span>
 
                             <span className={styles.span}>
-                                <b>Phone:</b>   <input className={styles.topInput} name='phone' type='text'
-                                                       placeholder='phone...' onChange={handleEmergency}/>
+                                <b>Phone:</b>  <input className={styles.topInput} placeholder="phone" {...register("emergencyPhone")} />
                                 </span>
                         </div>
                     </div>
@@ -353,28 +462,18 @@ const NewUser = ({ id, handleCreate, agency, success,  setSuccess }) => {
                         </div>
                         <div className={section === 'Work' ? styles.infoActive : styles.info}>
                            <span className={styles.span}>
-                                <b>Date of Hire:</b>   <input className={styles.topInput} name='hireDate' type='date'
-                                                              placeholder='Date of Hire...' onChange={handleHire}/>
+                                <b>Date of Hire:</b>   <input className={styles.topInput} {...register("hireDate")} type="date" />
                                 </span>
                             <span className={styles.span}>
-                                <b>Position:</b>   <input className={styles.topInput} name='position' type='text'
-                                                          placeholder='position...' onChange={handleHire}/>
+                                <b>Position:</b>   <input className={styles.topInput} placeholder="position" {...register("position")} />
                             </span>
 
                         </div>
                     </div>}
 
-                </div>}
-                {success && <div className={styles.success}>
-                    <h1>
-                        {inputs.firstName} {inputs.lastName} successfully Added!
-                    </h1>
-                    <button onClick={handleReset}>
-                        Add New User
-                    </button>
-                </div>}
-        </div>
-        </div>
+                </div>
+            </div>
+        </form>
     );
 };
 

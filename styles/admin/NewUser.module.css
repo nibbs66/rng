@@ -19,6 +19,14 @@
     color: #1980b5;
     font-size: 20px;
 }
+.success{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #1980b5;
+    font-size: 30px;
+
+}
 
 .bottom{
     min-height: 40vh;
@@ -149,7 +157,7 @@
 }
 .topInput{
     border: 1px solid lightslategray;
-    padding: 5px;
+    padding: 2px 7px;
     border-radius: 3px;
     font-size: 13px;
 }

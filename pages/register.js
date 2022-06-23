@@ -67,7 +67,7 @@ const Register = () => {
             })
         }
         filteredName()
-    },)
+    },[])
 
     const onSubmit = async(data) => {
         try{
@@ -94,17 +94,9 @@ const Register = () => {
                if (res.statusText === 'Created') {
                    reset()
                }
-
-
         }catch(err){
-
-                console.log(err)
-
-
+            console.log(err)
         }
-
-
-
     };
 
 
