@@ -1,6 +1,6 @@
 import styles from '../../styles/admin/NewSale.module.css'
 
-import React, {useState} from "react";
+import {useState} from "react";
 
 import Search from "../icons/Search";
 import Money from "../icons/Money";

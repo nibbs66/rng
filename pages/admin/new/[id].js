@@ -6,6 +6,7 @@ import NewSale from "../../../components/admin/NewSale";
 import NewUser from "../../../components/admin/NewUser";
 import useToggle from "../../../components/hooks/useToggle";
 import AdminLayout from "../../../components/layouts/AdminLayout";
+import ServiceItems from "../../../components/admin/ServiceItems";
 
 //import Rental from "../../../components/admin/Rental";
 
@@ -21,12 +22,12 @@ const New = ({category,  agency}) => {
         try{
                 const res = await axios.post(`/api/${id+'s'}`, data);
                 console.log(res)
-                    res.statusText && setSuccess(true)
+                    res.statusText && setSuccess()
         }catch(err){
             console.log(err)
         }
     }
-    console.log(id)
+
     return (
         <div className={styles.container}>
             <div className={styles.newContainer}>
@@ -35,6 +36,8 @@ const New = ({category,  agency}) => {
                     <NewUser  id={id} agency={agency} handleCreate={handleCreate} success={success} setSuccess={setSuccess}/>}
                 {id === 'sale' &&
                     <NewSale/>}
+                {id === 'createServices' &&
+                    <ServiceItems   category={category}/>}
                 {/* {id==='rental' && <Rental  id={id} handleCreate={handleCreate} category={category}
                 />}
                 {id === 'sale' &&

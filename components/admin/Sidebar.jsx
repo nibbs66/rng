@@ -70,6 +70,12 @@ const Sidebar = () => {
                         <Payment className={styles.icon}/>
                         <span  className={styles.span}>New Invoice</span>
                     </li>
+                    <Link href="/admin/new/createServices" passHref>
+                       <li className={styles.li}>
+                           <Danger className={styles.icon}/>
+                           <span  className={styles.span}>Create Services</span>
+                       </li>
+                   </Link>
                     <p className={styles.title}>SCHEDULING</p>
                     <Link href="/admin/calendar" passHref>
                         <li className={active === "Calendar" ? styles.liActive : styles.li} onClick={()=>handleClick("Calendar")}>

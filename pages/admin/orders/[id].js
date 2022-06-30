@@ -28,15 +28,7 @@ const Order = ({order}) => {
 
     useEffect((allStatus)=>{
 
-       const getUser = async () => {
-           try{
-               const res = await axios.get(process.env.VERCEL_URL+`/api/users/${order.userId}`);
-
-               setPhone(res.data.personal.phone)
-               console.log(res.data)
-           }catch(err){
-           }
-           setCustomer(  order.customer.firstName + ' ' + order.customer.lastName)
+      setData([])
            order.items.map((option)=>{
                console.log(option)
                setData( (prev)=>[...prev, {
@@ -64,8 +56,8 @@ const Order = ({order}) => {
            }
 
 
-       }
-       getUser()
+
+
     },[order])
     const handleChange = (e) => {
 
@@ -92,7 +84,7 @@ const Order = ({order}) => {
             return styles.cancelled;
         }
 
-        console.log(index)
+
     };
 
     const columns = [
@@ -152,7 +144,7 @@ const Order = ({order}) => {
         console.log(update)
         try{
             const res = await axios.put("http://localhost:3000/api/orders/"+order._id, {status: update.key});
-            console.log(res.data)
+
             setisChecked(update.name)
             setOrderStatus(update.name)
         }catch(err){
@@ -170,7 +162,7 @@ const Order = ({order}) => {
                        <div className={styles.productInfoLeft}>
                            <div className={styles.info}>
                                <h3>Customer: </h3>
-                               <span>{customer}</span>
+                               <span>{order.customer.firstName + ' ' + order.customer.lastName}</span>
                            </div>
                            <div className={styles.info}>
                                <h3>Address: </h3>
@@ -209,7 +201,7 @@ const Order = ({order}) => {
                            </div>
                            <div className={styles.info}>
                                <h3>Shipping: </h3>
-                               <span>{order.shippingMethod.shippingMethod}</span>
+                               <span>{order.shippingMethod.method}</span>
                            </div>
                            <div className={styles.info}>
                                <h3>Shipping Charge: </h3>

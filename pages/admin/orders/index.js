@@ -34,7 +34,7 @@ const Orders = ({orders}) => {
                 email:  option.email,
                 type: option.purchaseType,
                 total: `€${option.total.toFixed(2)}`,
-                carrier: option.shippingMethod?.shippingMethod,
+                carrier: option.shippingMethod?.method,
                 status: option.status,
 
             }])

@@ -21,7 +21,7 @@ const Customers = ({customers}) => {
   useEffect(()=>{
             setData([])
           customers.map((option)=>{
-              console.log('option', option)
+
               setData( (prev)=>[...prev, {
                   id: option._id,
                   avatar:  option.firstName,
@@ -106,7 +106,7 @@ const Customers = ({customers}) => {
             },
         },
     ];
-console.log('data', data)
+
     return(
         <div className={styles.container}>
 

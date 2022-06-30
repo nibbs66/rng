@@ -12,7 +12,8 @@ import React from "react";
 
 
 
-const Service = ({image}) => {
+const Service = ({service}) => {
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -32,9 +33,44 @@ const Service = ({image}) => {
                     </div>
 
                 </div>
+
                 <h1>Service & Repair</h1>
             </div>
-            <Contact image={image}/>
+            <div className={styles.wrapper}>
+
+                    {service.map((services)=>(
+                        services.desc &&
+                        <div className={styles.hero} key={services._id}>
+                        <p>
+                            {services.desc}
+                        </p>
+                        </div>
+                    ))}
+
+
+                <h2>SERVICES</h2>
+                {service.map((services, idx)=>(
+                    !services.desc &&
+                    <div className={styles.serviceList}>
+                        <div className={styles.headerLine} key={services._id}>
+                            <span>{services.serviceType.toUpperCase()}</span>
+                        </div>
+                        {services.services.map((item, idx)=>(
+                            <ul>
+                            <li key={idx}>
+                        {item}
+                            </li>
+
+
+                            </ul>
+                            ))}
+
+                    </div>
+
+                ))}
+
+            </div>
+
         </div>
     );
 };
@@ -51,11 +87,11 @@ Service.getLayout = function getLayout(page){
 
 export const getServerSideProps = async (ctx) => {
     const host = ctx.req.headers.host;
-    const img = await axios.get(`https://`+host+`/api/images`);
+    const img = await axios.get(`https://`+host+`/api/service`);
 
     return{
         props: {
-            image: img.data
+            service: img.data
         }
     }
 }

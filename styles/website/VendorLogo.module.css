@@ -1,9 +1,10 @@
 .imageContainer{
     margin-top: 10px;
-    height: 10vh;
+    height: 5vh;
     width: 300vw;
     padding: 0 20px;
     display: flex;
+    align-items: center;
     justify-content: space-evenly;
     overflow: hidden;
     cursor: pointer;
