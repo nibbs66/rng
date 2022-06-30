@@ -55,16 +55,17 @@ const Service = ({service}) => {
                         <div className={styles.headerLine} key={services._id}>
                             <span>{services.serviceType.toUpperCase()}</span>
                         </div>
+                        <ul>
                         {services.services.map((item, idx)=>(
-                            <ul>
+
                             <li key={idx}>
                         {item}
                             </li>
 
 
-                            </ul>
-                            ))}
 
+                            ))}
+                        </ul>
                     </div>
 
                 ))}
