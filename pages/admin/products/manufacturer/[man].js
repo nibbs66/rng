@@ -8,6 +8,7 @@ import Eye from "../../../../components/icons/Eye";
 import TrashCan from "../../../../components/icons/TrashCan";
 import TableHeader from "../../../../components/admin/TableHeader";
 import DataTable from "../../../../components/admin/DataTable";
+import AdminLayout from "../../../../components/layouts/AdminLayout";
 
 
 const Manufacturer = ({manufacturerList, categories, products}) => {
@@ -188,7 +189,13 @@ const Manufacturer = ({manufacturerList, categories, products}) => {
 };
 
 export default Manufacturer;
-Manufacturer.layout = "L2";
+Manufacturer.getLayout = function getLayout(page){
+    return(
+        <AdminLayout>
+            {page}
+        </AdminLayout>
+    )
+}
 export const getServerSideProps = async ({params}) =>{
 
     const res = await axios.get(process.env.VERCEL_URL+`/api/products?manufacturer=${params.man}`);

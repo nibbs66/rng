@@ -1,11 +1,12 @@
 import React from 'react';
 import {useRouter} from "next/router";
 
-import styles from "../../styles/website/Cart.module.css";
+import styles from "../../styles/website/Order.module.css";
 import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
 import MainLayout from "../../components/layouts/MainLayout";
+import ProgressBar from "../../components/website/ProgressBar";
 
 
 const Order = ({order}) => {
@@ -67,7 +68,9 @@ const Order = ({order}) => {
                 <title></title></Head>
 
             <div className={styles.header}>
-                <h1>Order Number: {id}</h1>
+
+                <h2>Order Status: </h2>
+                <ProgressBar order={order}/>
             </div>
             <div className={styles.wrapper}>
                 <div className={styles.left}>
@@ -101,8 +104,8 @@ const Order = ({order}) => {
                 <div className={styles.rightOrder}>
                     <div className={styles.topRight}>
                         <div className={styles.summary}>
-                            <span className={styles.summaryText}>Order Status: </span>
-                            <span className={styles.summaryText}>{statusName(order.status)}</span>
+                            <span className={styles.summaryText}>Order Number: </span>
+                            <span className={styles.summaryText}>{id}</span>
                         </div>
                         <div className={styles.summary}>
                             <span className={styles.summaryText}>Address: </span>
@@ -133,6 +136,7 @@ const Order = ({order}) => {
                     </div>
                 </div>
             </div>
+
         </div>
     );
 };

@@ -8,6 +8,7 @@ import TableHeader from "../../../../components/admin/TableHeader";
 import DataTable from "../../../../components/admin/DataTable";
 import Eye from "../../../../components/icons/Eye";
 import TrashCan from "../../../../components/icons/TrashCan";
+import AdminLayout from "../../../../components/layouts/AdminLayout";
 
 const Category = ({categoryList, categories, products}) => {
     const router = useRouter()
@@ -181,7 +182,13 @@ const Category = ({categoryList, categories, products}) => {
 };
 
 export default Category;
-Category.layout = "L2";
+Category.getLayout = function getLayout(page){
+    return(
+        <AdminLayout>
+            {page}
+        </AdminLayout>
+    )
+}
 export const getServerSideProps = async ({params}) =>{
 
     const res = await axios.get(process.env.VERCEL_URL+`/api/products?category=${params.cat}`);

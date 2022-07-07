@@ -1,12 +1,15 @@
 import styles from '../../styles/admin/Chart2.module.css'
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import {useState} from "react";
 import useToggle from "../hooks/useToggle";
+import useSales from '../hooks/useSales'
 const initialValue = {id: 'WebShop', color: '#8884d8'};
-
-const Chart2 = () => {
+import dayjs, {updateLocale} from "dayjs";
+const Chart2 = ({winkel}) => {
     const [view, setView] = useState(initialValue);
     const [singleChart, setSingleChart] = useToggle()
+    const sales = useSales({winkel})
+console.log(sales)
 
     const handleClick = (data) => {
         if (!singleChart) {
@@ -18,12 +21,12 @@ const Chart2 = () => {
     };
 
     const data = [
-        { name: "January", WebShop: 1200, Rentals: 3000, Cursus: 2200, Service: 1800},
-        { name: "February", WebShop: 2100, Rentals: 500, Cursus: 3000, Service: 2500},
-        { name: "March", WebShop: 800, Rentals: 2400,Cursus: 300, Service: 600 },
-        { name: "April", WebShop: 1600, Rentals: 300, Cursus: 1300, Service: 2300},
-        { name: "May", WebShop: 900, Rentals: 1200, Cursus: 500, Service: 1500},
-        { name: "June", WebShop: 1700, Rentals: 950, Cursus: 900, Service: 1100},
+        { name: dayjs(dayjs().subtract(6, 'month')).format('MMMM'), WebShop: useSales({winkel: winkel, back: '6'}), Rentals: 3000, Cursus: 2200, Service: 1800},
+        { name: dayjs(dayjs().subtract(5, 'month')).format('MMMM'), WebShop: useSales({winkel: winkel, back: '5'}), Rentals: 500, Cursus: 3000, Service: 2500},
+        { name: dayjs(dayjs().subtract(4, 'month')).format('MMMM'), WebShop: useSales({winkel: winkel, back: '4'}), Rentals: 2400,Cursus: 300, Service: 600 },
+        { name: dayjs(dayjs().subtract(3, 'month')).format('MMMM'), WebShop: useSales({winkel: winkel, back: '3'}), Rentals: 300, Cursus: 1300, Service: 2300},
+        { name: dayjs(dayjs().subtract(2, 'month')).format('MMMM'), WebShop: useSales({winkel: winkel, back: '2'}), Rentals: 1200, Cursus: 500, Service: 1500},
+        { name: dayjs(dayjs().subtract(1, 'month')).format('MMMM'), WebShop: useSales({winkel: winkel, back: '1'}), Rentals: 950, Cursus: 900, Service: 1100},
     ];
 
 
@@ -41,7 +44,7 @@ const Chart2 = () => {
                 )}>Reset</button>
 
             </div>
-            <ResponsiveContainer width="100%" aspect={4/1}>
+            <ResponsiveContainer width="100%" aspect={4}>
                 <AreaChart width={730} height={250} data={data}
                            margin={{ top: 10, right: 30, left: 0, bottom: 0 }} >
                     <defs>

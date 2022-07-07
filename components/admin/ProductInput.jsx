@@ -103,7 +103,7 @@ const ProductInput = ({ id, handleCreate, category }) => {
                     console.log(typeof(downloadURL))
                     setImg(downloadURL)
                     try{
-                        const res = await axios.post('http://localhost:3000/api/images', {
+                        const res = await axios.post('/api/images', {
                             pic: {
                                 img: downloadURL,
                                 category: inputs.category,
@@ -118,7 +118,7 @@ const ProductInput = ({ id, handleCreate, category }) => {
             }
         );
     }
-console.log(img)
+
     return (
         <div className={styles.container}>
             <div className={styles.top}>
@@ -129,7 +129,7 @@ console.log(img)
                 </div>
                 <div className={styles.buttonContainer}>
                     {id && <button className={styles.button} onClick={()=>handleCreate({
-                        ...inputs, subCategories: subCategories, categories, color: colors, barcode: codes, size: sizes, img: img
+                        ...inputs, subCategories: subCategories, categories: cat.categories, color: colors, barcode: codes, size: sizes, img: img
                     })}>CREATE
                         NEW {id.toUpperCase()}</button>}
                 </div>

@@ -48,7 +48,7 @@ const UploadImage = ({file, setFile, img, setImg, inputs, setInputs}) => {
                     console.log(typeof(downloadURL))
                     setImg(downloadURL)
                     try{
-                        const res = await axios.post('http://localhost:3000/api/images', {
+                        const res = await axios.post('/api/images', {
                             pic: {
                                 img: downloadURL,
                                 category: inputs.category,

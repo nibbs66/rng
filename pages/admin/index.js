@@ -2,16 +2,17 @@ import React, {useEffect, useState} from 'react';
 import styles from "../../styles/admin/Admin.module.css"
 
 import FeaturedInfo from "../../components/admin/FeaturedInfo";
-import {  getSession} from "next-auth/react"
+import { getSession} from "next-auth/react"
 import {getToken} from "next-auth/jwt";
 import WidgetSm from "../../components/admin/WidgetSm";
 import WidgetLg from "../../components/admin/WidgetLg";
 import Chart2 from "../../components/admin/Chart2";
 
 import AdminLayout from "../../components/layouts/AdminLayout";
+import axios from "axios";
 
 
-const AdminHome = ({session, token}) => {
+const AdminHome = ({session, income, orders}) => {
 
 
 
@@ -21,8 +22,8 @@ const AdminHome = ({session, token}) => {
 
            <div className={styles.container}>
                <div className={styles.wrapper}>
-                   <FeaturedInfo/>
-                   <Chart2/>
+                   <FeaturedInfo income={income}/>
+                   <Chart2 winkel={orders}/>
                    <div className={styles.widgetContainer}>
                        <WidgetSm/>
                        <WidgetLg/>
@@ -46,11 +47,16 @@ AdminHome.getLayout = function getLayout(page){
         </AdminLayout>
     )
 }
-export async function getServerSideProps(context) {
+export async function getServerSideProps(ctx) {
+    const host = ctx.req.headers.host;
+    const res = await axios.get(`https://`+host+`/api/orders/income`);
+    const range = await axios.get(`https://`+host+`/api/orders`);
     return {
         props: {
-            session: await getSession(context),
-            token: await getToken(context)
+            income: res.data,
+            orders: range.data,
+            session: await getSession(ctx),
+            token: await getToken(ctx)
         },
     }
 }

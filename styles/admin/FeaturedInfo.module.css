@@ -7,7 +7,8 @@
 
 .featuredItem {
     flex: 1;
-    background-color: rgba(205, 92, 92, 0.5);
+    background-color: rgba(0, 191, 255, 0.5);
+
     margin: 0px 20px;
     padding: 30px;
     border-radius: 10px;
@@ -16,7 +17,10 @@
     box-shadow: 5px 5px 17px 5px rgba(0, 0, 0, 0.66);
 }
 .featuredItem:nth-child(2){
-    background-color: rgba(0, 191, 255, 0.5);
+    background-color: rgba(205, 92, 92, 0.5);
+}
+.featuredItem:nth-child(3){
+    background-color: rgba(255, 255, 0, 0.5);
 }
 .featuredItem:last-child{
     background-color: rgba(102, 205, 170, 0.5);

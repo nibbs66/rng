@@ -8,7 +8,10 @@ import mask from '../../../public/img/WEB-Zensee-Pro-M1010S-QBA.jpg'
 import axios from "axios";
 
 import Upload from "../../../components/icons/Upload";
+import AdminLayout from "../../../components/layouts/AdminLayout";
+import React from "react";
 const Product = ({product}) => {
+    console.log(product)
     const router = useRouter()
     const {params} = router.query
     const [inputs, setInputs] = useState({})
@@ -114,11 +117,18 @@ const Product = ({product}) => {
     };
 
     export default Product;
-Product.layout = "L2";
-export const getServerSideProps = async ({params}) =>{
+Product.getLayout = function getLayout(page){
+    return(
+        <AdminLayout>
+            {page}
+        </AdminLayout>
+    )
+}
+export const getServerSideProps = async (ctx) =>{
+    const host = ctx.req.headers.host;
+    let id= ctx.params.params[1]
 
-
-    const res = await axios.get(process.env.VERCEL_URL+`/api/products/${params.params[1]}`);
+    const res = await axios.get(`https://`+host+`/api/products/${id}`);
     return{
         props:{
             product: res.data,

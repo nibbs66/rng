@@ -74,15 +74,24 @@
 }
 .activityContainer{
     display: flex;
+
+    margin: 0 30px;
     flex-direction: column;
     align-items: center;
     min-height: 20vh;
-    border: 1px solid darkslategray;
+    border-radius: 7px;
+    border: 1px solid lightslategray;
     padding: 10px;
 }
 .activities{
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+.activity{
+    margin-bottom: 15px;
 }
 .right{
     flex: 4;

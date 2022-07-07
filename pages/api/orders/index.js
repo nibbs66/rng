@@ -3,15 +3,30 @@ import Order from "../../../models/Order";
 
 import Product from "../../../models/Product";
 import {sendConfirmationEmail} from "../../../lib/mailer";
+import User from "../../../models/User";
 const handler = async(req,res) => {
 
-    const {method} = req;
+    const {
+        method,
+        query: {id},
+
+    } = req;
 
     await dbConnect()
 
         if (method === "GET") {
-            try {
-                const orders = await Order.find()
+
+
+           try {
+                let orders;
+                if(id){
+                    orders = await Order.find({
+                        userId: id
+                    });
+                }else{
+                     orders = await Order.find()
+                }
+
                 res.status(200).json(orders)
             } catch (err) {
                 res.status(500).json(err)

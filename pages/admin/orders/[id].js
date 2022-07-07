@@ -143,7 +143,7 @@ const Order = ({order}) => {
     const handleStatus = async(e, update) => {
         console.log(update)
         try{
-            const res = await axios.put("http://localhost:3000/api/orders/"+order._id, {status: update.key});
+            const res = await axios.put("/api/orders/"+order._id, {status: update.key});
 
             setisChecked(update.name)
             setOrderStatus(update.name)
