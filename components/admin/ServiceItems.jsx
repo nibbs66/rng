@@ -1,9 +1,9 @@
-import styles from '../../styles/admin/New.module.css'
+import styles from '../../styles/admin/NewService.module.css'
 import  {useState} from "react";
 import axios from "axios";
 
 
-const ServiceItems = ({category}) => {
+const ServiceItems = () => {
 
 
     const [service, setService] = useState('')
@@ -11,12 +11,6 @@ const ServiceItems = ({category}) => {
     const [inputs, setInputs] = useState({});
 
     const [services, setServices] = useState([])
-    const [sizes, setSizes] = useState([])
-    const [codes, setCodes] = useState([])
-    const [file, setFile] = useState([])
-    const [img, setImg] = useState([])
-    const [catIndex, setCatIndex] = useState('')
-
 
 
     const handleServices = (e) => {
@@ -24,6 +18,9 @@ const ServiceItems = ({category}) => {
         setServices(prev=>[...prev, service])
         setService('')
     };
+
+
+
 
     const handleChange = (e) => {
 
@@ -107,33 +104,34 @@ const ServiceItems = ({category}) => {
                                    onChange={handleChange}
                             />
                         </div>
-                        <div className={styles.formInput}>
-                            <label className={styles.label}>
-                                Service Category
-                            </label>
-                            <input className={styles.input}
-                                   type='text'
-                                   name='serviceType'
-                                   placeholder='Tanks'
-                                   onChange={handleChange}
-                            />
+                        <div className={styles.rightBottom}>
+                            <div className={styles.formInput}>
+                                <label className={styles.label}>
+                                    Service Category
+                                </label>
+                                <input className={styles.input}
+                                       type='text'
+                                       name='serviceType'
+                                       placeholder='Tanks'
+                                       onChange={handleChange}
+                                />
+                            </div>
+                            <div className={styles.formInput}>
+                                <label className={styles.label}>
+                                    Services
+                                </label>
+                                <input className={styles.input}
+                                       type='text'
+                                       name='services'
+                                       value={service}
+                                       placeholder='Tank Fill'
+                                       onChange={(e) =>setService(e.target.value)}
+                                />
+                                <button className={styles.labelButton} onClick={handleServices}>Add Service</button>
+                            </div>
+
+
                         </div>
-
-
-                        <div className={styles.formInput}>
-                            <label className={styles.label}>
-                                Services
-                            </label>
-                            <input className={styles.input}
-                                   type='text'
-                                   name='services'
-                                   value={service}
-                                   placeholder='Tank Fill'
-                                   onChange={(e) =>setService(e.target.value)}
-                            />
-                            <button className={styles.labelButton} onClick={handleServices}>Add Service</button>
-                        </div>
-
                     </form>
                 </div>
             </div>

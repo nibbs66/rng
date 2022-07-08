@@ -1,4 +1,5 @@
 import axios from "axios";
+import PendingUser from "../../../../models/PendingUser";
 
 
 
@@ -22,7 +23,7 @@ const response = await axios.get(`/api/users/pending/${id}`)
         res.end();
     }
 
-        /*try {
+        try {
             const user = await PendingUser.findById(id);
 
             !user && res.status(404).json('User not found');
@@ -32,7 +33,7 @@ const response = await axios.get(`/api/users/pending/${id}`)
                 res.status(401).json(err)
 
 
-        }*/
+        }
 
 
 }
