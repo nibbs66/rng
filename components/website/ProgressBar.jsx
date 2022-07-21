@@ -53,7 +53,7 @@ const ProgressBar = ({order}) => {
                 {statusName(order.status)}
            </span>
               <div  className={styles.img}>
-                  <Image  src={diver} alt='' height={80} width={80} objectFit='contain'/>
+                  <Image  src={diver} alt='' height={80} width={80} objectFit='cover'/>
               </div>
 
           </div>

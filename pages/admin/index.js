@@ -49,8 +49,8 @@ AdminHome.getLayout = function getLayout(page){
 }
 export async function getServerSideProps(ctx) {
     const host = ctx.req.headers.host;
-    const res = await axios.get(`https://`+host+`/api/orders/income`);
-    const range = await axios.get(`https://`+host+`/api/orders`);
+    const res = await axios.get(`http://`+host+`/api/orders/income`);
+    const range = await axios.get(`http://`+host+`/api/orders`);
     return {
         props: {
             income: res.data,

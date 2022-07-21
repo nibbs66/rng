@@ -13,63 +13,18 @@ const Order = ({order}) => {
     const router = useRouter()
     const {id} = router.query
 
-    const statusClass = (index) => {
-        if(index === 0){
 
-          return styles.received
-
-
-        }
-        if(index === 1){
-
-            return styles.prepared
-
-        }
-        if(index === 2){
-
-            return styles.shipped;
-        }
-        if(index === 3) {
-
-            return styles.delivered;
-        }
-        if(index === 4) {
-
-            return styles.cancelled;
-        }
-    };
-    const statusName = (index) => {
-        if(index === 0){
-
-            return 'Order Received'
-        }
-        if(index === 1){
-
-            return 'Ready to Ship'
-
-        }
-        if(index === 2){
-
-            return 'Shipped'
-        }
-        if(index === 3) {
-
-            return 'Delivered';
-        }
-        if(index === 4) {
-
-            return 'Cancelled'
-        }
-    };
     return (
         <div className={styles.container} style={{minHeight: '80vh'}}>
             <Head>
 
-                <title></title></Head>
+                <title>Your Order</title>
+                <link  rel="icon" href="/headerlogo.svg"/>
+            </Head>
 
             <div className={styles.header}>
 
-                <h2>Order Status: </h2>
+                <h2>Order Status:</h2>
                 <ProgressBar order={order}/>
             </div>
             <div className={styles.wrapper}>

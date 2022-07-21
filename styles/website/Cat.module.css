@@ -23,6 +23,10 @@
     justify-content: space-around;
     margin-bottom: 10px;
 }
+.back>h1{
+
+    font-size: 38px;
+}
 .backArrow{
     display: flex;
     align-items: center;
@@ -32,6 +36,7 @@
 .terug{
     cursor: pointer;
     margin-left: 15px;
+    font-size: 38px;
 }
 .buttonContainer{
     display: flex;
