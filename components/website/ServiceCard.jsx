@@ -17,13 +17,13 @@ const ServiceCard = ({product, cat}) => {
         <div className={styles.container} onClick={()=>handleClick(product._id)}>
 
             <div className={styles.circle}>
-            {product.img && <Image src={`/img/${product.img[0]}`} alt="" height={150} width={150} objectFit="contain"/>}
+                {product.img && <img src={product.img[0]} alt="" height={150} width={300} objectFit="contain"/>}
 
             </div>
-            <div className={styles.mobileImg}>
-                {product.img && <Image src={`/img/${product.img[0]}`} alt="" height={50} width={150} objectFit="contain"/>}
+            {/*<div className={styles.mobileImg}>
+                {product.img && <Image src={product.img[0]} alt="" height={50} width={150} objectFit="contain"/>}
 
-            </div>
+            </div>*/}
 
                 <div className={styles.info}>
                     <span className={styles.manufacturer}>{product.manufacturer}</span>

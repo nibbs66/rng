@@ -16,7 +16,7 @@ const ImageModal = ({img, pic,setShowModal}) => {
                   X
               </span>
                 </div>
-               <Image src={`/img/${pic[index]}`} alt='' height={600} width={600} objectFit="contain"/>
+               <Image src={pic[index]} alt='' height={600} width={600} objectFit="contain"/>
            </div>
             <div>
                 {pic.length > 1 && pic.map((picture, idx)=>(

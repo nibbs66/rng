@@ -36,7 +36,7 @@ const Favorites = ({session}) => {
                       </div>
 
                     </Link>
-                    <h1>Favorites</h1>
+                    <h1 >Favorites</h1>
                 </div>
                 <div className={styles.buttonContainer}>
 

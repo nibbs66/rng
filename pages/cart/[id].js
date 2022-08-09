@@ -141,10 +141,10 @@ useEffect(()=>{
                     <div className={styles.product} key={item._id}>
                         <div className={styles.productDetail}>
                             <div  className={styles.mainImage}>
-                                <Image  src={`/img/${item.img}`} alt='' height={200} width={200} objectFit='contain'/>
+                                <Image  src={item.img} alt='' height={200} width={200} objectFit='contain'/>
                             </div>
                             <div  className={styles.mobileImage}>
-                                <Image  src={`/img/${item.img}`} alt='' height={50} width={70} objectFit='contain'/>
+                                <Image  src={item.img} alt='' height={50} width={70} objectFit='contain'/>
                             </div>
 
                             <div className={styles.details}>

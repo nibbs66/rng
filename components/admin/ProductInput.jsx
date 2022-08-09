@@ -101,24 +101,13 @@ const ProductInput = ({ id, handleCreate, category }) => {
                 // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                 getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
                     console.log(typeof(downloadURL))
-                    setImg(downloadURL)
-                    try{
-                        const res = await axios.post('/api/images', {
-                            pic: {
-                                img: downloadURL,
-                                category: inputs.category,
-                                link: inputs.link
-                            }
-                        })
-                        console.log(res.data)
-                    }catch(err){
-                        console.log(err)
-                    }
+                    setImg(prev=>[...prev, downloadURL])
+
                 });
             }
         );
     }
-
+console.log(img)
     return (
         <div className={styles.container}>
             <div className={styles.top}>

@@ -43,6 +43,7 @@ export default function Home({images}) {
 export async function getServerSideProps ({req, res}){
 
     const {host} = req.headers;
+
     const pic = await axios.get(`https://`+host+`/api/images`);
     setCookies('visitor', `guest${uuidv4()}`, { req, res, maxAge: 60 * 6 * 24 });
 

@@ -49,11 +49,11 @@ const Products = ({products, categories}) => {
 
     useEffect(()=>{
         const list = new Set(initialMan)
-        console.log(list)
+
         setNewManufacturer([...new Set(initialMan)])
 
 
-       
+
 
     },[initialMan])
     const columns = [
